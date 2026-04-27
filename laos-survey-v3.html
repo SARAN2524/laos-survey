@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Laos Market Survey</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f2f5f9;
+  --white:#ffffff;
+  --s2:#f7f9fc;
+  --s3:#edf1f7;
+  --b1:#dde4ef;
+  --b2:#c8d3e4;
+  --blue:#1455c0;
+  --blue2:#0d40a0;
+  --blue-lt:#e8effe;
+  --orange:#d95f02;
+  --orange-lt:#fff0e6;
+  --green:#1a7a3c;
+  --green-lt:#e6f6ec;
+  --red:#c0112b;
+  --red-lt:#fde8eb;
+  --gold:#a06000;
+  --gold-lt:#fff8e6;
+  --purple:#6b35a8;
+  --purple-lt:#f2ebfc;
+  --text:#111827;
+  --text2:#374151;
+  --muted:#6b7a99;
+  --muted2:#9aaabf;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05);
+  --shadow-lg:0 4px 16px rgba(0,0,0,.1),0 8px 32px rgba(0,0,0,.06);
+  --font:'Sarabun',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:300;height:56px;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 16px;gap:10px;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.nav-brand{display:flex;align-items:center;gap:9px}
+.nav-flag{font-size:22px;line-height:1}
+.nav-info{line-height:1.25}
+.nav-title{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--blue);letter-spacing:.14em;text-transform:uppercase}
+.nav-sub{font-size:9px;color:var(--muted);font-family:var(--mono)}
+.nav-tabs{display:flex;background:var(--s3);border:1px solid var(--b1);border-radius:9px;padding:3px;gap:2px}
+.tab-btn{padding:6px 14px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;font-family:var(--font);white-space:nowrap;letter-spacing:.01em}
+.tab-btn.active{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(20,85,192,.25)}
+.live{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 2px rgba(26,122,60,.2);animation:livepulse 2s infinite;flex-shrink:0}
+@keyframes livepulse{0%,100%{box-shadow:0 0 0 2px rgba(26,122,60,.2)}50%{box-shadow:0 0 0 5px rgba(26,122,60,.05)}}
+
+main{padding-top:56px;min-height:100vh}
+.page{display:none}
+.page.active{display:block;animation:slideUp .25s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── HERO ── */
+.hero{padding:18px 16px 14px;background:linear-gradient(135deg,#1455c0 0%,#0d40a0 60%,#0a3080 100%);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.hero::after{content:'ລາວ';position:absolute;right:-8px;bottom:-18px;font-size:80px;font-weight:900;color:rgba(255,255,255,.06);pointer-events:none;letter-spacing:-3px;line-height:1}
+.hero-eye{font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.65);letter-spacing:.2em;text-transform:uppercase;margin-bottom:5px}
+.hero-title{font-size:19px;font-weight:800;color:#fff;letter-spacing:.01em}
+.hero-meta{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.hb{padding:4px 9px;border-radius:5px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.04em;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.12);color:rgba(255,255,255,.9)}
+
+/* ── FORM WRAPPER ── */
+.fw{padding:14px 14px 8px;display:flex;flex-direction:column;gap:12px;max-width:640px;margin:0 auto}
+
+/* ── CARD / SECTION ── */
+.card{background:var(--white);border:1px solid var(--b1);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.card-h{display:flex;align-items:center;gap:9px;padding:11px 14px;background:var(--s2);border-bottom:1px solid var(--b1);cursor:pointer;user-select:none;transition:background .15s}
+.card-h:active{background:var(--s3)}
+.card-ic{font-size:16px;flex-shrink:0}
+.card-tt{font-size:12px;font-weight:700;color:var(--text);flex:1;letter-spacing:.02em}
+.card-num{font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--s3);padding:2px 7px;border-radius:4px;border:1px solid var(--b1)}
+.card-cv{font-size:10px;color:var(--muted2);transition:transform .2s;flex-shrink:0}
+.card.col .card-cv{transform:rotate(-90deg)}
+.card-b{padding:14px;display:flex;flex-direction:column;gap:11px}
+.card.col .card-b{display:none}
+
+/* ── FIELDS ── */
+.f{display:flex;flex-direction:column;gap:5px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.07em;text-transform:uppercase;display:flex;align-items:center;gap:3px}
+.req{color:var(--red)}
+input,select,textarea{
+  width:100%;background:var(--white);border:1.5px solid var(--b1);border-radius:8px;
+  color:var(--text);font-family:var(--font);font-size:13px;padding:9px 12px;
+  transition:border-color .15s,box-shadow .15s;outline:none;-webkit-appearance:none;appearance:none
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(20,85,192,.1)
+}
+input::placeholder,textarea::placeholder{color:var(--muted2)}
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%236b7a99' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px
+}
+textarea{resize:vertical;min-height:64px;line-height:1.5}
+
+/* ── GPS WIDGET ── */
+.gps-box{background:var(--s3);border:1.5px solid var(--b1);border-radius:10px;overflow:hidden}
+.gps-btn-wrap{padding:12px}
+.gps-trigger{width:100%;padding:13px 16px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:all .2s;box-shadow:0 2px 8px rgba(20,85,192,.3);letter-spacing:.01em}
+.gps-trigger:active{transform:scale(.98)}
+.gps-trigger.loading{background:linear-gradient(135deg,#6b7a99,#5a6a88);box-shadow:none;cursor:not-allowed}
+.gps-trigger.success{background:linear-gradient(135deg,var(--green),#0e5a2a);box-shadow:0 2px 8px rgba(26,122,60,.3)}
+.gps-trigger.fail{background:linear-gradient(135deg,var(--red),#8b0d1e);box-shadow:0 2px 8px rgba(192,17,43,.3)}
+.gps-result{display:none;margin:0 12px 12px;background:var(--green-lt);border:1px solid rgba(26,122,60,.2);border-radius:8px;padding:10px 12px}
+.gps-result-row{display:flex;align-items:center;justify-content:space-between}
+.gps-coords{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--green)}
+.gps-acc{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:2px}
+.gps-maps-link{font-size:10px;color:var(--blue);text-decoration:none;font-weight:600;white-space:nowrap;padding:3px 7px;background:var(--blue-lt);border-radius:4px}
+.gps-error{display:none;margin:0 12px 12px;background:var(--red-lt);border:1px solid rgba(192,17,43,.2);border-radius:8px;padding:10px 12px}
+.gps-error-title{font-size:11px;font-weight:700;color:var(--red);margin-bottom:3px}
+.gps-error-msg{font-size:11px;color:var(--text2)}
+.gps-manual{padding:0 12px 12px}
+.gps-manual summary{font-size:11px;color:var(--muted);cursor:pointer;padding:4px 0;list-style:none;display:flex;align-items:center;gap:4px}
+.gps-manual summary::before{content:'▸';font-size:10px;transition:transform .2s}
+.gps-manual details[open] summary::before{transform:rotate(90deg)}
+.gps-manual-inputs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+
+/* ── CHIPS ── */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--b1);background:var(--white);color:var(--muted);transition:all .15s;user-select:none;line-height:1.3}
+.chip:active{transform:scale(.96)}
+.chip.c-blue{background:var(--blue-lt);border-color:var(--blue);color:var(--blue)}
+.chip.c-orange{background:var(--orange-lt);border-color:var(--orange);color:var(--orange)}
+.chip.c-green{background:var(--green-lt);border-color:var(--green);color:var(--green)}
+.chip.c-gold{background:var(--gold-lt);border-color:var(--gold);color:var(--gold)}
+.chip.c-red{background:var(--red-lt);border-color:var(--red);color:var(--red)}
+
+/* ── SKU ACCORDION ── */
+.sku-list{display:flex;flex-direction:column;gap:8px}
+.sku-card{border:1.5px solid var(--b1);border-radius:10px;overflow:hidden;background:var(--white)}
+.sku-h{display:flex;align-items:center;gap:10px;padding:11px 13px;cursor:pointer;user-select:none;transition:background .15s}
+.sku-h:hover{background:var(--s2)}
+.sku-h:active{background:var(--s3)}
+.sku-ico{font-size:17px;flex-shrink:0}
+.sku-name{font-size:13px;font-weight:700;color:var(--text);flex:1}
+.sku-tag{font-family:var(--mono);font-size:9px;font-weight:700;padding:3px 7px;border-radius:4px;letter-spacing:.04em}
+.sku-arr{font-size:11px;color:var(--muted2);transition:transform .2s;flex-shrink:0}
+.sku-card.open .sku-arr{transform:rotate(90deg)}
+.sku-b{display:none;padding:12px 13px;border-top:1.5px solid var(--b1);flex-direction:column;gap:10px;background:var(--s2)}
+.sku-card.open .sku-b{display:flex}
+.price-block{background:var(--white);border:1px solid var(--b1);border-radius:8px;padding:11px;display:flex;flex-direction:column;gap:8px}
+.price-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.price-lbl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:4px}
+.pl-si{color:var(--orange)}
+.pl-so{color:var(--green)}
+.price-hint{font-size:9px;color:var(--muted);text-align:center;font-family:var(--mono)}
+
+/* ── COMPETITOR ── */
+.comp-list{display:flex;flex-direction:column;gap:10px}
+.comp-card{border:1.5px solid var(--b1);border-radius:10px;padding:12px;background:var(--white)}
+.comp-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.comp-num{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:4px;border:1px solid rgba(20,85,192,.15)}
+.comp-del{margin-left:auto;background:none;border:none;color:var(--muted2);font-size:18px;cursor:pointer;padding:2px 6px;border-radius:5px;line-height:1;transition:all .15s}
+.comp-del:hover{color:var(--red);background:var(--red-lt)}
+.add-comp{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:11px;border:2px dashed var(--b2);border-radius:10px;background:none;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.02em}
+.add-comp:hover,.add-comp:active{border-color:var(--blue);color:var(--blue);background:var(--blue-lt)}
+
+/* ── FRESHNESS ── */
+.fr-chips{display:flex;gap:6px;flex-wrap:wrap}
+.fr-chip{padding:5px 12px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--b1);background:var(--white);color:var(--muted);transition:all .15s;user-select:none}
+.fr-chip.fresh{background:var(--green-lt);border-color:var(--green);color:var(--green)}
+.fr-chip.ok{background:var(--gold-lt);border-color:var(--gold);color:var(--gold)}
+.fr-chip.old{background:var(--red-lt);border-color:var(--red);color:var(--red)}
+
+/* ── SUBMIT ── */
+.submit-wrap{padding:12px 14px 32px;max-width:640px;margin:0 auto}
+.submit-btn{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;font-family:var(--font);font-size:15px;font-weight:800;cursor:pointer;letter-spacing:.03em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 16px rgba(20,85,192,.3)}
+.submit-btn:active{transform:scale(.98);box-shadow:0 2px 8px rgba(20,85,192,.2)}
+.entry-ct{text-align:center;margin-top:9px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(90px);z-index:999;padding:12px 22px;border-radius:12px;font-size:13px;font-weight:700;pointer-events:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.t-ok{background:var(--green);color:#fff}
+.t-err{background:var(--red);color:#fff}
+.t-info{background:var(--blue);color:#fff}
+
+/* ── DASHBOARD ── */
+.dash-hero{padding:18px 16px 14px;background:linear-gradient(135deg,#1455c0,#0a3080);border-bottom:1px solid var(--b1)}
+.dash-hero-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.dash-title{font-size:17px;font-weight:800;color:#fff}
+.dash-sub{font-size:10px;color:rgba(255,255,255,.6);font-family:var(--mono);margin-top:2px}
+.dash-acts{display:flex;gap:6px;flex-shrink:0}
+.dab{padding:7px 12px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--font);border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:rgba(255,255,255,.9);transition:all .2s;white-space:nowrap}
+.dab:active{transform:scale(.96)}
+.dab-e{border-color:rgba(26,122,60,.5);background:rgba(26,122,60,.2);color:#7de8a0}
+.dw{padding:14px;display:flex;flex-direction:column;gap:12px;max-width:720px;margin:0 auto}
+
+/* KPI */
+.kpi-g{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.kpi{background:var(--white);border:1px solid var(--b1);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow)}
+.kpi-l{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.kpi-v{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1}
+.kv-b{color:var(--blue)}
+.kv-g{color:var(--green)}
+.kv-o{color:var(--orange)}
+.kv-gd{color:var(--gold)}
+.kpi-s{font-size:10px;color:var(--muted);margin-top:3px}
+
+/* FILTER */
+.fscroll{display:flex;gap:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.fscroll::-webkit-scrollbar{display:none}
+.fc{padding:6px 14px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1.5px solid var(--b1);background:var(--white);color:var(--muted);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.fc.active{background:var(--blue-lt);border-color:var(--blue);color:var(--blue)}
+
+/* TABLE */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:520px}
+thead tr{background:var(--s3);border-bottom:2px solid var(--b1)}
+th{padding:9px 11px;text-align:left;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--b1);transition:background .1s}
+tbody tr:hover{background:var(--s2)}
+td{padding:9px 11px;vertical-align:middle}
+td.mono{font-family:var(--mono);font-size:11px;color:var(--blue)}
+td.dim{color:var(--muted)}
+
+/* INSIGHT */
+.ig{display:flex;flex-direction:column;gap:9px}
+.ic{background:var(--white);border:1px solid var(--b1);border-radius:12px;padding:13px;box-shadow:var(--shadow)}
+.ic-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.ic-brand{font-size:13px;font-weight:800;color:var(--text)}
+.ic-cnt{font-family:var(--mono);font-size:9px;color:var(--blue);background:var(--blue-lt);padding:2px 8px;border-radius:4px;border:1px solid rgba(20,85,192,.15)}
+.ir{display:flex;gap:7px;align-items:flex-start;font-size:11px;margin-bottom:5px;line-height:1.4;color:var(--text2)}
+.ip{padding:2px 8px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;margin-top:1px}
+.ip-s{background:var(--blue-lt);color:var(--blue)}
+.ip-i{background:var(--orange-lt);color:var(--orange)}
+.ip-o{background:var(--green-lt);color:var(--green)}
+.ip-r{background:var(--purple-lt);color:var(--purple)}
+.ip-p{background:var(--gold-lt);color:var(--gold)}
+
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:9px;color:var(--muted);text-align:center}
+.ei{font-size:36px;opacity:.3}
+
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-flag">🇱🇦</span>
+    <div class="nav-info">
+      <div class="nav-title">Market Survey</div>
+      <div class="nav-sub">Laos · Beverage</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('survey',this)">📋 Survey</button>
+    <button class="tab-btn" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+  </div>
+  <div class="live"></div>
+</nav>
+
+<main>
+<!-- ══════════ SURVEY ══════════ -->
+<div class="page active" id="page-survey">
+  <div class="hero">
+    <div class="hero-eye">Field Survey Form</div>
+    <div class="hero-title">บันทึกข้อมูลตลาดลาว</div>
+    <div class="hero-meta">
+      <span class="hb" id="hb-date">📅 —</span>
+      <span class="hb" id="hb-agent">👤 —</span>
+      <span class="hb" id="hb-count">📦 0 entries</span>
+    </div>
+  </div>
+
+  <div class="fw">
+
+    <!-- 01 ข้อมูลการสำรวจ -->
+    <div class="card" id="c1">
+      <div class="card-h" onclick="tCard('c1')">
+        <span class="card-ic">🗓️</span><span class="card-tt">ข้อมูลการสำรวจ</span>
+        <span class="card-num">01</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="fr">
+          <div class="f"><label>วันที่ <span class="req">*</span></label><input type="date" id="f_date" oninput="uHero()"></div>
+          <div class="f"><label>ชื่อพนักงาน <span class="req">*</span></label><input type="text" id="f_agent" placeholder="ชื่อ-สกุล" oninput="uHero()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 ข้อมูลร้านค้า -->
+    <div class="card" id="c2">
+      <div class="card-h" onclick="tCard('c2')">
+        <span class="card-ic">🏪</span><span class="card-tt">ข้อมูลร้านค้า</span>
+        <span class="card-num">02</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="fr">
+          <div class="f"><label>ชื่อร้าน <span class="req">*</span></label><input type="text" id="f_store" placeholder="ชื่อร้านค้า"></div>
+          <div class="f"><label>ชื่อเจ้าของ</label><input type="text" id="f_owner" placeholder="ชื่อเจ้าของ / ผู้ดูแล"></div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>เบอร์ติดต่อ</label><input type="tel" id="f_phone" placeholder="020-XXXXXXXX"></div>
+          <div class="f"><label>Line / WhatsApp</label><input type="text" id="f_line" placeholder="ID หรือเบอร์"></div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>แขวง <span class="req">*</span></label>
+            <select id="f_prov">
+              <option value="">-- แขวง --</option>
+              <option>เวียงจันทน์นคร</option><option>เวียงจันทน์</option><option>จำปาสัก</option>
+              <option>สะหวันนะเขต</option><option>หลวงพระบาง</option><option>ไซยะบุลี</option>
+              <option>คำม่วน</option><option>บอลิคำไซ</option><option>เชียงขวาง</option>
+              <option>อุดมไซ</option><option>บ่อแก้ว</option><option>หลวงน้ำทา</option>
+              <option>ฝองสาลี</option><option>หัวพัน</option><option>อัตตะปือ</option>
+              <option>เซกอง</option><option>สาละวัน</option>
+            </select>
+          </div>
+          <div class="f"><label>เมือง / เขต</label><input type="text" id="f_dist" placeholder="ชื่อเมือง / เขต"></div>
+        </div>
+        <div class="f"><label>ที่อยู่โดยย่อ</label><input type="text" id="f_addr" placeholder="ถนน / ย่าน / ใกล้เคียง"></div>
+        <div class="f">
+          <label>Shop Type <span class="req">*</span></label>
+          <div class="chips" id="cp_shop">
+            <div class="chip" data-v="traditional" onclick="pick(this,'shop','s','c-orange')">🛒 Traditional</div>
+            <div class="chip" data-v="wet_market" onclick="pick(this,'shop','s','c-orange')">🐟 Wet Market</div>
+            <div class="chip" data-v="minimart" onclick="pick(this,'shop','s','c-orange')">🏪 Minimart/CVS</div>
+            <div class="chip" data-v="modern_trade" onclick="pick(this,'shop','s','c-orange')">🏬 Modern Trade</div>
+            <div class="chip" data-v="horeca" onclick="pick(this,'shop','s','c-orange')">🍽️ HoReCa</div>
+            <div class="chip" data-v="other" onclick="pick(this,'shop','s','c-orange')">📦 อื่นๆ</div>
+          </div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>ขนาดร้าน</label>
+            <select id="f_size"><option value="">--</option><option value="s">เล็ก (S)</option><option value="m">กลาง (M)</option><option value="l">ใหญ่ (L)</option></select>
+          </div>
+          <div class="f"><label>ทำเล</label>
+            <select id="f_loc"><option value="">--</option><option value="main_road">ริมถนนหลัก</option><option value="market">ในตลาด</option><option value="community">ในชุมชน</option><option value="mall">ในห้าง</option><option value="other">อื่นๆ</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 GPS Location -->
+    <div class="card" id="c3">
+      <div class="card-h" onclick="tCard('c3')">
+        <span class="card-ic">📍</span><span class="card-tt">GPS Location</span>
+        <span class="card-num">03</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b" style="padding:0">
+        <div class="gps-box">
+          <div class="gps-btn-wrap">
+            <button class="gps-trigger" id="gpsBtn" onclick="getGPS()">
+              <span id="gpsIco">📡</span>
+              <span id="gpsTxt">กดเพื่อบันทึกพิกัด GPS</span>
+            </button>
+          </div>
+          <div class="gps-result" id="gpsResult">
+            <div class="gps-result-row">
+              <div>
+                <div class="gps-coords" id="gpsCoords">—</div>
+                <div class="gps-acc" id="gpsAcc"></div>
+              </div>
+              <a class="gps-maps-link" id="gpsMapsLink" href="#" target="_blank">🗺️ ดูแผนที่</a>
+            </div>
+          </div>
+          <div class="gps-error" id="gpsError">
+            <div class="gps-error-title">⚠️ ไม่สามารถดึงพิกัดได้</div>
+            <div class="gps-error-msg" id="gpsErrMsg"></div>
+          </div>
+          <div class="gps-manual">
+            <details>
+              <summary>กรอกพิกัดเองแบบ manual</summary>
+              <div class="gps-manual-inputs">
+                <div class="f"><label>Latitude</label><input type="text" id="f_lat_m" placeholder="17.9757" inputmode="decimal" oninput="onManualGPS()"></div>
+                <div class="f"><label>Longitude</label><input type="text" id="f_lng_m" placeholder="102.6331" inputmode="decimal" oninput="onManualGPS()"></div>
+              </div>
+            </details>
+          </div>
+        </div>
+        <input type="hidden" id="f_lat">
+        <input type="hidden" id="f_lng">
+        <input type="hidden" id="f_acc">
+      </div>
+    </div>
+
+    <!-- 04 Our Brand -->
+    <div class="card" id="c4">
+      <div class="card-h" onclick="tCard('c4')">
+        <span class="card-ic">🟢</span><span class="card-tt">Our Brand — สินค้าเรา</span>
+        <span class="card-num">04</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="f">
+          <label>มีสินค้าเราในร้านหรือไม่?</label>
+          <div class="chips" id="cp_hasour">
+            <div class="chip" data-v="yes" onclick="pick(this,'hasour','s','c-green');showOur(true)">✅ มี</div>
+            <div class="chip" data-v="no" onclick="pick(this,'hasour','s','c-red');showOur(false)">❌ ไม่มี</div>
+          </div>
+        </div>
+        <div id="our-yes" style="display:none;flex-direction:column;gap:8px">
+          <div style="font-size:11px;color:var(--muted);background:var(--blue-lt);border:1px solid rgba(20,85,192,.15);border-radius:7px;padding:8px 11px;">
+            💡 กดที่ชื่อ SKU เพื่อกรอกข้อมูลราคาและ Stock
+          </div>
+          <div class="sku-list">
+            <!-- DD 140 -->
+            <div class="sku-card" id="sk-dd140">
+              <div class="sku-h" onclick="tSku('sk-dd140')">
+                <span class="sku-ico">🥤</span><span class="sku-name">DD 140</span>
+                <span class="sku-tag" style="background:var(--blue-lt);color:var(--blue)">Energy</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd140_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd140_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                  <div class="price-hint">Sell-in = ราคาส่งให้ร้าน &nbsp;|&nbsp; Sell-out = ราคาขายปลีก</div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd140_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="dd140_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+            <!-- DD 200 -->
+            <div class="sku-card" id="sk-dd200">
+              <div class="sku-h" onclick="tSku('sk-dd200')">
+                <span class="sku-ico">🥤</span><span class="sku-name">DD 200</span>
+                <span class="sku-tag" style="background:var(--blue-lt);color:var(--blue)">Energy</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd200_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd200_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd200_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="dd200_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+            <!-- DD 450 -->
+            <div class="sku-card" id="sk-dd450">
+              <div class="sku-h" onclick="tSku('sk-dd450')">
+                <span class="sku-ico">🧃</span><span class="sku-name">DD 450</span>
+                <span class="sku-tag" style="background:var(--blue-lt);color:var(--blue)">Energy</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd450_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd450_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd450_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="dd450_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+            <!-- Mikku 300 -->
+            <div class="sku-card" id="sk-mikku300">
+              <div class="sku-h" onclick="tSku('sk-mikku300')">
+                <span class="sku-ico">🥛</span><span class="sku-name">Mikku 300</span>
+                <span class="sku-tag" style="background:var(--purple-lt);color:var(--purple)">Milk</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="mikku300_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="mikku300_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="mikku300_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="mikku300_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+            <!-- DD Yo 125 -->
+            <div class="sku-card" id="sk-ddyo125">
+              <div class="sku-h" onclick="tSku('sk-ddyo125')">
+                <span class="sku-ico">🍶</span><span class="sku-name">DD Yo 125</span>
+                <span class="sku-tag" style="background:var(--gold-lt);color:var(--gold)">Yogurt</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="ddyo125_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="ddyo125_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="ddyo125_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="ddyo125_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+            <!-- DD Yo 300 -->
+            <div class="sku-card" id="sk-ddyo300">
+              <div class="sku-h" onclick="tSku('sk-ddyo300')">
+                <span class="sku-ico">🍶</span><span class="sku-name">DD Yo 300</span>
+                <span class="sku-tag" style="background:var(--gold-lt);color:var(--gold)">Yogurt</span>
+                <span class="sku-arr">▶</span>
+              </div>
+              <div class="sku-b">
+                <div class="price-block">
+                  <div class="price-row">
+                    <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="ddyo300_si" placeholder="ราคาส่ง"></div>
+                    <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="ddyo300_so" placeholder="ราคาปลีก"></div>
+                  </div>
+                </div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="ddyo300_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label>
+                  <select id="ddyo300_st"><option value="">-- เลือก --</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="our-no" style="display:none;flex-direction:column;gap:9px">
+          <div class="f"><label>สาเหตุที่ไม่มีสินค้าเรา</label>
+            <div class="chips" id="cp_nor">
+              <div class="chip" data-v="never" onclick="pick(this,'nor','s','c-blue')">ไม่เคยสั่ง</div>
+              <div class="chip" data-v="oos" onclick="pick(this,'nor','s','c-blue')">หมด Stock</div>
+              <div class="chip" data-v="switched" onclick="pick(this,'nor','s','c-blue')">เปลี่ยนแบรนด์</div>
+              <div class="chip" data-v="price" onclick="pick(this,'nor','s','c-blue')">ราคาสูงเกิน</div>
+              <div class="chip" data-v="unknown" onclick="pick(this,'nor','s','c-blue')">ไม่ทราบ</div>
+            </div>
+          </div>
+          <div class="f"><label>รายละเอียด</label><textarea id="f_nor_note" placeholder="ระบุเพิ่มเติม..."></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Competitors -->
+    <div class="card" id="c5">
+      <div class="card-h" onclick="tCard('c5')">
+        <span class="card-ic">⚔️</span><span class="card-tt">Competitor Brands</span>
+        <span class="card-num">05</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="comp-list" id="compList"></div>
+        <button class="add-comp" onclick="addComp()">＋ เพิ่มคู่แข่ง</button>
+      </div>
+    </div>
+
+    <!-- 06 Promotion -->
+    <div class="card" id="c6">
+      <div class="card-h" onclick="tCard('c6')">
+        <span class="card-ic">🎯</span><span class="card-tt">Promotion & Campaign</span>
+        <span class="card-num">06</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="f"><label>ใครกำลังทำ Promotion อยู่?</label><input type="text" id="f_pb" placeholder="ชื่อแบรนด์ที่ทำ Promo"></div>
+        <div class="f"><label>ประเภท Promotion</label>
+          <div class="chips" id="cp_promo">
+            <div class="chip" data-v="discount" onclick="pick(this,'promo','m','c-gold')">💸 Price Discount</div>
+            <div class="chip" data-v="bogo" onclick="pick(this,'promo','m','c-gold')">🎁 Buy X Get Y</div>
+            <div class="chip" data-v="bundle" onclick="pick(this,'promo','m','c-gold')">📦 Bundle Pack</div>
+            <div class="chip" data-v="posm" onclick="pick(this,'promo','m','c-gold')">🪧 POSM/Display</div>
+            <div class="chip" data-v="cooler" onclick="pick(this,'promo','m','c-gold')">❄️ Branded Cooler</div>
+            <div class="chip" data-v="sampling" onclick="pick(this,'promo','m','c-gold')">🧪 Sampling</div>
+            <div class="chip" data-v="none" onclick="pick(this,'promo','s','c-gold')">— ไม่มี</div>
+          </div>
+        </div>
+        <div class="f"><label>รายละเอียด</label><textarea id="f_pd" placeholder="เช่น Red Bull ซื้อ 12 แถม 2 เฉพาะเดือนนี้..."></textarea></div>
+      </div>
+    </div>
+
+    <!-- 07 Insight -->
+    <div class="card" id="c7">
+      <div class="card-h" onclick="tCard('c7')">
+        <span class="card-ic">💬</span><span class="card-tt">Owner / Consumer Insight</span>
+        <span class="card-num">07</span><span class="card-cv">▾</span>
+      </div>
+      <div class="card-b">
+        <div class="f"><label>สินค้าที่ขายดีที่สุดในร้านนี้?</label><input type="text" id="f_top" placeholder="ชื่อสินค้า / แบรนด์"></div>
+        <div class="f"><label>เพราะอะไรถึงขายดี?</label><textarea id="f_topwhy" placeholder="ราคาถูก / ลูกค้าขอ / ตัวแทนให้ราคาดี..."></textarea></div>
+        <div class="f"><label>Feedback จากเจ้าของร้าน / ลูกค้า</label><textarea id="f_fb" placeholder="ลูกค้าถามหาสินค้าเรา, เจ้าของร้านบอกว่า..."></textarea></div>
+        <div class="f">
+          <label>ความร้อนแรงการแข่งขัน 🌡️</label>
+          <div class="chips" id="cp_heat">
+            <div class="chip" data-v="1" onclick="pick(this,'heat','s','c-green')">1 เย็น</div>
+            <div class="chip" data-v="2" onclick="pick(this,'heat','s','c-green')">2</div>
+            <div class="chip" data-v="3" onclick="pick(this,'heat','s','c-gold')">3 ปานกลาง</div>
+            <div class="chip" data-v="4" onclick="pick(this,'heat','s','c-orange')">4</div>
+            <div class="chip" data-v="5" onclick="pick(this,'heat','s','c-orange')">5 🔥 ร้อนมาก</div>
+          </div>
+        </div>
+        <div class="f"><label>หมายเหตุ / สิ่งที่น่าสนใจ</label><textarea id="f_remark" placeholder="โอกาส, ความเสี่ยง, สิ่งที่ควรรายงาน..."></textarea></div>
+      </div>
+    </div>
+
+  </div>
+  <div class="submit-wrap">
+    <button class="submit-btn" onclick="submit()"><span>💾</span><span>บันทึกข้อมูล</span></button>
+    <div class="entry-ct" id="ec">รวม 0 รายการในฐานข้อมูล</div>
+  </div>
+</div>
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div class="page" id="page-dashboard">
+  <div class="dash-hero">
+    <div class="dash-hero-row">
+      <div>
+        <div class="dash-title">Market Intelligence 🇱🇦</div>
+        <div class="dash-sub" id="d-upd">Last update: —</div>
+      </div>
+      <div class="dash-acts">
+        <button class="dab dab-e" onclick="expCSV()">⬇️ Export CSV</button>
+        <button class="dab" onclick="clrAll()">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="hero-meta"><span class="hb" id="d-range">—</span></div>
+  </div>
+  <div class="dw">
+    <div class="kpi-g">
+      <div class="kpi"><div class="kpi-l">📍 Stores Visited</div><div class="kpi-v kv-b" id="kv-s">0</div><div class="kpi-s">ร้านทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-l">✅ Our Presence</div><div class="kpi-v kv-g" id="kv-p">0%</div><div class="kpi-s">Distribution rate</div></div>
+      <div class="kpi"><div class="kpi-l">⚔️ Competitors</div><div class="kpi-v kv-o" id="kv-c">0</div><div class="kpi-s">unique brands</div></div>
+      <div class="kpi"><div class="kpi-l">🌡️ Avg Heat</div><div class="kpi-v kv-gd" id="kv-h">—</div><div class="kpi-s">market temp</div></div>
+    </div>
+    <!-- Filter -->
+    <div class="card"><div class="card-h" style="cursor:default"><span class="card-ic">🔍</span><span class="card-tt">Filter by Channel</span></div>
+      <div class="card-b"><div class="fscroll">
+        <div class="fc active" onclick="setF(this,'all')">All</div>
+        <div class="fc" onclick="setF(this,'traditional')">🛒 Traditional</div>
+        <div class="fc" onclick="setF(this,'wet_market')">🐟 Wet Market</div>
+        <div class="fc" onclick="setF(this,'minimart')">🏪 Minimart</div>
+        <div class="fc" onclick="setF(this,'modern_trade')">🏬 Modern Trade</div>
+        <div class="fc" onclick="setF(this,'horeca')">🍽️ HoReCa</div>
+      </div></div>
+    </div>
+    <!-- SKU Summary -->
+    <div class="card"><div class="card-h" style="cursor:default"><span class="card-ic">🟢</span><span class="card-tt">Our Brand — Distribution & Price</span></div>
+      <div class="card-b" style="padding:0"><div class="tw"><table>
+        <thead><tr><th>SKU</th><th>ร้าน (มี)</th><th>Coverage</th><th>Avg Sell-in</th><th>Avg Sell-out</th><th>Top Source</th></tr></thead>
+        <tbody id="tSKU"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr></tbody>
+      </table></div></div>
+    </div>
+    <!-- Competitor -->
+    <div class="card"><div class="card-h" style="cursor:default"><span class="card-ic">⚔️</span><span class="card-tt">Competitor Intelligence</span></div>
+      <div class="card-b"><div class="ig" id="compIG"><div class="empty"><span class="ei">⚔️</span><span>ยังไม่มีข้อมูลคู่แข่ง</span></div></div></div>
+    </div>
+    <!-- Records -->
+    <div class="card"><div class="card-h" style="cursor:default"><span class="card-ic">📋</span><span class="card-tt">Survey Records</span><span class="card-num" id="recN">0</span></div>
+      <div class="card-b" style="padding:0"><div class="tw"><table>
+        <thead><tr><th>#</th><th>Date</th><th>Agent</th><th>Store</th><th>แขวง</th><th>Channel</th><th>GPS</th><th>Our</th><th>Heat</th></tr></thead>
+        <tbody id="tRec"><tr><td colspan="9" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr></tbody>
+      </table></div></div>
+    </div>
+  </div>
+</div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const SKUS=['dd140','dd200','dd450','mikku300','ddyo125','ddyo300'];
+const SKU_N={dd140:'DD 140',dd200:'DD 200',dd450:'DD 450',mikku300:'Mikku 300',ddyo125:'DD Yo 125',ddyo300:'DD Yo 300'};
+const CH_N={traditional:'🛒 Traditional',wet_market:'🐟 Wet Market',minimart:'🏪 Minimart',modern_trade:'🏬 Modern Trade',horeca:'🍽️ HoReCa',other:'📦 อื่นๆ'};
+let db=JSON.parse(localStorage.getItem('lms4')||'[]');
+let cs={};let ci=0;let af='all';
+let gpsData={lat:null,lng:null,acc:null};
+
+window.onload=()=>{
+  document.getElementById('f_date').value=new Date().toISOString().split('T')[0];
+  uHero();addComp();rCount();
+};
+
+// ── TABS ──
+function switchTab(p,b){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  b.classList.add('active');
+  if(p==='dashboard')renderDash();
+}
+
+// ── ACCORDION ──
+function tCard(id){document.getElementById(id).classList.toggle('col')}
+function tSku(id){document.getElementById(id).classList.toggle('open')}
+
+// ── CHIPS ──
+function pick(el,g,mode,cls){
+  if(!cs[g])cs[g]=[];
+  const v=el.dataset.v;
+  const con=el.closest('.chips');
+  if(mode==='s'){
+    if(con)con.querySelectorAll('.chip').forEach(c=>c.className='chip');
+    el.classList.add(cls);cs[g]=[v];
+  } else {
+    if([...el.classList].some(c=>c.startsWith('c-'))){
+      el.className='chip';cs[g]=cs[g].filter(x=>x!==v);
+    } else {el.classList.add(cls);cs[g].push(v);}
+  }
+  if(g==='hasour')showOur(v==='yes');
+}
+function gv(g){return(cs[g]||[])[0]||''}
+function gvs(g){return(cs[g]||[]).join(', ')}
+function showOur(y){
+  document.getElementById('our-yes').style.display=y?'flex':'none';
+  document.getElementById('our-no').style.display=y?'none':'flex';
+}
+
+// ── GPS ──
+function getGPS(){
+  const btn=document.getElementById('gpsBtn');
+  const ico=document.getElementById('gpsIco');
+  const txt=document.getElementById('gpsTxt');
+  const res=document.getElementById('gpsResult');
+  const err=document.getElementById('gpsError');
+  if(!navigator.geolocation){
+    err.style.display='block';
+    document.getElementById('gpsErrMsg').textContent='Browser ไม่รองรับ GPS — ใช้ Chrome บน Android/iPhone ครับ';
+    return;
+  }
+  btn.className='gps-trigger loading';
+  ico.textContent='⏳';txt.textContent='กำลังดึงพิกัด...';
+  btn.disabled=true;res.style.display='none';err.style.display='none';
+  navigator.geolocation.getCurrentPosition(
+    pos=>{
+      const lat=pos.coords.latitude.toFixed(6);
+      const lng=pos.coords.longitude.toFixed(6);
+      const acc=Math.round(pos.coords.accuracy);
+      gpsData={lat,lng,acc};
+      document.getElementById('f_lat').value=lat;
+      document.getElementById('f_lng').value=lng;
+      document.getElementById('f_acc').value=acc;
+      document.getElementById('gpsCoords').textContent=lat+',  '+lng;
+      document.getElementById('gpsAcc').textContent='± '+acc+' m accuracy';
+      document.getElementById('gpsMapsLink').href='https://www.google.com/maps?q='+lat+','+lng;
+      res.style.display='block';
+      btn.className='gps-trigger success';
+      ico.textContent='✅';txt.textContent='บันทึกพิกัดแล้ว — กดอีกครั้งเพื่ออัปเดต';
+      btn.disabled=false;
+      toast('📍 GPS สำเร็จ ±'+acc+'m','t-ok');
+    },
+    e=>{
+      btn.className='gps-trigger fail';
+      ico.textContent='❌';txt.textContent='ดึงพิกัดไม่ได้ — กดลองอีกครั้ง';
+      btn.disabled=false;err.style.display='block';
+      const m={1:'กรุณาอนุญาต Location Permission ในเบราว์เซอร์',2:'ไม่พบสัญญาณ GPS',3:'หมดเวลา — ลองอีกครั้ง'};
+      document.getElementById('gpsErrMsg').textContent=m[e.code]||e.message;
+    },
+    {enableHighAccuracy:true,timeout:15000,maximumAge:0}
+  );
+}
+function onManualGPS(){
+  const lat=document.getElementById('f_lat_m').value.trim();
+  const lng=document.getElementById('f_lng_m').value.trim();
+  if(lat&&lng&&!isNaN(lat)&&!isNaN(lng)){
+    gpsData={lat:parseFloat(lat).toFixed(6),lng:parseFloat(lng).toFixed(6),acc:'manual'};
+    document.getElementById('f_lat').value=gpsData.lat;
+    document.getElementById('f_lng').value=gpsData.lng;
+    document.getElementById('gpsCoords').textContent=gpsData.lat+',  '+gpsData.lng;
+    document.getElementById('gpsAcc').textContent='manual input';
+    document.getElementById('gpsMapsLink').href='https://www.google.com/maps?q='+gpsData.lat+','+gpsData.lng;
+    document.getElementById('gpsResult').style.display='block';
+  }
+}
+function uHero(){
+  document.getElementById('hb-date').textContent='📅 '+(document.getElementById('f_date').value||'—');
+  document.getElementById('hb-agent').textContent='👤 '+(document.getElementById('f_agent').value||'—');
+}
+
+// ── COMPETITOR ──
+function addComp(){
+  ci++;const n=ci;
+  const d=document.createElement('div');
+  d.className='comp-card';d.id='comp_'+n;
+  d.innerHTML=`
+  <div class="comp-head">
+    <span class="comp-num">คู่แข่ง #${n}</span>
+    <button class="comp-del" onclick="document.getElementById('comp_${n}').remove()">✕</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div class="fr">
+      <div class="f"><label>แบรนด์ <span class="req">*</span></label><input type="text" id="c${n}b" placeholder="เช่น Est, Red Bull"></div>
+      <div class="f"><label>ประเทศ/แหล่งที่มา</label>
+        <select id="c${n}or"><option value="">--</option><option>ไทย</option><option>ลาว</option><option>เวียดนาม</option><option>จีน</option><option>ญี่ปุ่น</option><option>อื่นๆ</option></select>
+      </div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>SKU / รสชาติ / ขนาด</label><input type="text" id="c${n}sk" placeholder="Original 250ml"></div>
+      <div class="f"><label>ประเภทสินค้า</label>
+        <select id="c${n}cat"><option value="">--</option><option value="energy">Energy Drink</option><option value="water">น้ำดื่ม</option><option value="juice">น้ำผลไม้</option><option value="cola">Cola/CSD</option><option value="tea">ชา/กาแฟ RTD</option><option value="sports">Sports Drink</option><option value="milk">นม/โยเกิร์ต</option><option value="other">อื่นๆ</option></select>
+      </div>
+    </div>
+    <div class="price-block">
+      <div class="price-row">
+        <div class="f"><div class="price-lbl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="c${n}si" placeholder="ราคาส่ง"></div>
+        <div class="f"><div class="price-lbl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="c${n}so" placeholder="ราคาปลีก"></div>
+      </div>
+    </div>
+    <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="c${n}src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+    <div class="fr">
+      <div class="f"><label>Stock ในร้าน</label>
+        <select id="c${n}st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+      </div>
+      <div class="f"><label>ความสด / สภาพ Stock</label>
+        <div class="fr-chips">
+          <div class="fr-chip" onclick="pickFr(this,'fr${n}','fresh')">✅ Fresh</div>
+          <div class="fr-chip" onclick="pickFr(this,'fr${n}','ok')">🟡 OK</div>
+          <div class="fr-chip" onclick="pickFr(this,'fr${n}','old')">🔴 ใกล้หมดอายุ</div>
+        </div>
+      </div>
+    </div>
+    <div class="f"><label>Promotion ที่วิ่งอยู่</label><input type="text" id="c${n}pr" placeholder="ซื้อ 12 แถม 1, ลด 10%..."></div>
+    <div class="f"><label>หมายเหตุ</label><input type="text" id="c${n}nt" placeholder="สิ่งที่น่าสังเกต..."></div>
+  </div>`;
+  document.getElementById('compList').appendChild(d);
+  cs['fr'+n]=[];
+}
+function pickFr(el,g,cls){
+  el.closest('.fr-chips').querySelectorAll('.fr-chip').forEach(c=>c.className='fr-chip');
+  el.classList.add(cls);cs[g]=[el.dataset?.v||cls];
+}
+function collectComps(){
+  return[...document.querySelectorAll('[id^="comp_"]')].map(r=>{
+    const n=r.id.split('_')[1];
+    const b=(document.getElementById('c'+n+'b')||{}).value||'';
+    if(!b)return null;
+    return{brand:b,origin:(document.getElementById('c'+n+'or')||{}).value||'',sku:(document.getElementById('c'+n+'sk')||{}).value||'',cat:(document.getElementById('c'+n+'cat')||{}).value||'',sellIn:(document.getElementById('c'+n+'si')||{}).value||'',sellOut:(document.getElementById('c'+n+'so')||{}).value||'',source:(document.getElementById('c'+n+'src')||{}).value||'',stock:(document.getElementById('c'+n+'st')||{}).value||'',fresh:gv('fr'+n),promo:(document.getElementById('c'+n+'pr')||{}).value||'',note:(document.getElementById('c'+n+'nt')||{}).value||''};
+  }).filter(Boolean);
+}
+
+// ── SUBMIT ──
+function submit(){
+  const dt=document.getElementById('f_date').value;
+  const ag=document.getElementById('f_agent').value.trim();
+  const st=document.getElementById('f_store').value.trim();
+  const pv=document.getElementById('f_prov').value;
+  const sh=gv('shop');
+  if(!dt||!ag||!st||!pv||!sh){toast('⚠️ กรุณากรอก: วันที่, ชื่อพนักงาน, ชื่อร้าน, แขวง, Shop Type','t-err');return;}
+  const skus={};
+  SKUS.forEach(s=>{
+    const si=(document.getElementById(s+'_si')||{}).value||'';
+    const so=(document.getElementById(s+'_so')||{}).value||'';
+    const src=(document.getElementById(s+'_src')||{}).value||'';
+    const stk=(document.getElementById(s+'_st')||{}).value||'';
+    if(si||so||src||stk)skus[s]={si,so,src,stk};
+  });
+  const e={
+    id:Date.now(),date:dt,agent:ag,
+    store:st,owner:document.getElementById('f_owner').value,
+    phone:document.getElementById('f_phone').value,line:document.getElementById('f_line').value,
+    province:pv,district:document.getElementById('f_dist').value,address:document.getElementById('f_addr').value,
+    shopType:sh,storeSize:document.getElementById('f_size').value,locType:document.getElementById('f_loc').value,
+    lat:gpsData.lat,lng:gpsData.lng,acc:gpsData.acc,
+    hasOur:gv('hasour'),noReason:gv('nor'),noReasonNote:document.getElementById('f_nor_note').value,
+    skus,competitors:collectComps(),
+    promoBrand:document.getElementById('f_pb').value,
+    promoTypes:gvs('promo'),promoDetail:document.getElementById('f_pd').value,
+    topSell:document.getElementById('f_top').value,topReason:document.getElementById('f_topwhy').value,
+    feedback:document.getElementById('f_fb').value,heat:gv('heat'),
+    remark:document.getElementById('f_remark').value,
+  };
+  db.push(e);localStorage.setItem('lms4',JSON.stringify(db));
+  toast('✅ บันทึก "'+st+'" สำเร็จ','t-ok');
+  resetF(dt,ag);rCount();
+}
+function resetF(dt,ag){
+  document.querySelectorAll('#page-survey input[type=text],#page-survey input[type=number],#page-survey input[type=tel],#page-survey textarea').forEach(x=>{if(x.id!='f_date'&&x.id!='f_agent')x.value='';});
+  document.querySelectorAll('#page-survey select').forEach(s=>s.selectedIndex=0);
+  document.querySelectorAll('#page-survey .chip').forEach(c=>c.className='chip');
+  document.querySelectorAll('#page-survey .fr-chip').forEach(c=>c.className='fr-chip');
+  cs={};gpsData={lat:null,lng:null,acc:null};
+  document.getElementById('gpsResult').style.display='none';
+  document.getElementById('gpsError').style.display='none';
+  const btn=document.getElementById('gpsBtn');
+  btn.className='gps-trigger';btn.disabled=false;
+  document.getElementById('gpsIco').textContent='📡';
+  document.getElementById('gpsTxt').textContent='กดเพื่อบันทึกพิกัด GPS';
+  document.getElementById('our-yes').style.display='none';
+  document.getElementById('our-no').style.display='none';
+  document.querySelectorAll('.sku-card').forEach(c=>c.classList.remove('open'));
+  document.getElementById('compList').innerHTML='';ci=0;
+  document.getElementById('f_date').value=dt;
+  document.getElementById('f_agent').value=ag;
+  addComp();window.scrollTo({top:0,behavior:'smooth'});
+}
+function rCount(){
+  document.getElementById('hb-count').textContent='📦 '+db.length+' entries';
+  document.getElementById('ec').textContent='รวม '+db.length+' รายการในฐานข้อมูล';
+}
+
+// ── DASHBOARD ──
+function setF(el,f){af=f;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderDash();}
+function fdata(){return af==='all'?db:db.filter(r=>r.shopType===af);}
+function renderDash(){
+  const data=fdata();const n=data.length;
+  document.getElementById('kv-s').textContent=n;
+  const wo=data.filter(r=>r.hasOur==='yes').length;
+  document.getElementById('kv-p').textContent=n?Math.round(wo/n*100)+'%':'0%';
+  const ab=new Set(data.flatMap(r=>(r.competitors||[]).map(c=>c.brand?.toLowerCase()).filter(Boolean)));
+  document.getElementById('kv-c').textContent=ab.size;
+  const hs=data.filter(r=>r.heat).map(r=>parseInt(r.heat));
+  document.getElementById('kv-h').textContent=hs.length?(hs.reduce((a,b)=>a+b,0)/hs.length).toFixed(1)+' 🔥':'—';
+  if(db.length){
+    document.getElementById('d-upd').textContent='Last update: '+new Date(db[db.length-1].id).toLocaleString('th-TH');
+    const ds=db.map(r=>r.date).sort();
+    document.getElementById('d-range').textContent=ds[0]+' → '+ds[ds.length-1];
+  }
+  document.getElementById('recN').textContent=n;
+  renderSKU(data);renderComp(data);renderTbl(data);
+}
+function renderSKU(data){
+  const tb=document.getElementById('tSKU');
+  if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>';return;}
+  tb.innerHTML=SKUS.map(s=>{
+    const rows=data.filter(r=>r.skus?.[s]);
+    const nr=rows.length;
+    const sis=rows.map(r=>parseInt(r.skus[s].si)).filter(p=>!isNaN(p)&&p>0);
+    const sos=rows.map(r=>parseInt(r.skus[s].so)).filter(p=>!isNaN(p)&&p>0);
+    const avgSI=sis.length?Math.round(sis.reduce((a,b)=>a+b,0)/sis.length).toLocaleString():'—';
+    const avgSO=sos.length?Math.round(sos.reduce((a,b)=>a+b,0)/sos.length).toLocaleString():'—';
+    const srcs=rows.map(r=>r.skus[s].src).filter(Boolean);
+    const topS=srcs.length?Object.entries(srcs.reduce((a,v)=>{a[v]=(a[v]||0)+1;return a},{})).sort((a,b)=>b[1]-a[1])[0]?.[0]:'—';
+    const cov=data.length?Math.round(nr/data.length*100):0;
+    const cc=cov>=50?'var(--green)':cov>=25?'var(--gold)':'var(--red)';
+    return`<tr><td><b>${SKU_N[s]}</b></td><td class="mono">${nr}</td><td><span style="color:${cc};font-family:var(--mono);font-weight:700">${cov}%</span></td><td class="mono" style="color:var(--orange)">${avgSI}</td><td class="mono" style="color:var(--green)">${avgSO}</td><td class="dim" style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px">${topS}</td></tr>`;
+  }).join('');
+}
+function renderComp(data){
+  const el=document.getElementById('compIG');
+  const m={};
+  data.forEach(r=>(r.competitors||[]).forEach(c=>{if(!c.brand)return;const k=c.brand.trim();if(!m[k])m[k]=[];m[k].push(c);}));
+  const s=Object.entries(m).sort((a,b)=>b[1].length-a[1].length);
+  if(!s.length){el.innerHTML='<div class="empty"><span class="ei">⚔️</span><span>ยังไม่มีข้อมูลคู่แข่ง</span></div>';return;}
+  el.innerHTML=s.slice(0,10).map(([brand,rows])=>{
+    const skus=[...new Set(rows.map(r=>r.sku).filter(Boolean))];
+    const sis=rows.map(r=>parseInt(r.sellIn)).filter(p=>!isNaN(p)&&p>0);
+    const sos=rows.map(r=>parseInt(r.sellOut)).filter(p=>!isNaN(p)&&p>0);
+    const srcs=[...new Set(rows.map(r=>r.source).filter(Boolean))];
+    const ps=[...new Set(rows.map(r=>r.promo).filter(Boolean))];
+    const si=sis.length?Math.min(...sis).toLocaleString()+(sis.length>1&&Math.min(...sis)!==Math.max(...sis)?'–'+Math.max(...sis).toLocaleString():''):null;
+    const so=sos.length?Math.min(...sos).toLocaleString()+(sos.length>1&&Math.min(...sos)!==Math.max(...sos)?'–'+Math.max(...sos).toLocaleString():''):null;
+    return`<div class="ic"><div class="ic-h"><span class="ic-brand">${brand}</span><span class="ic-cnt">${rows.length}x seen</span></div>
+    ${skus.length?`<div class="ir"><span class="ip ip-s">SKU</span><span>${skus.slice(0,3).join(', ')}</span></div>`:''}
+    ${si?`<div class="ir"><span class="ip ip-i">SELL-IN</span><span>${si} LAK</span></div>`:''}
+    ${so?`<div class="ir"><span class="ip ip-o">SELL-OUT</span><span>${so} LAK</span></div>`:''}
+    ${srcs.length?`<div class="ir"><span class="ip ip-r">SOURCE</span><span>${srcs.slice(0,2).join(', ')}</span></div>`:''}
+    ${ps.length?`<div class="ir"><span class="ip ip-p">PROMO</span><span>${ps[0]}</span></div>`:''}
+    </div>`;
+  }).join('');
+}
+function renderTbl(data){
+  const tb=document.getElementById('tRec');
+  if(!data.length){tb.innerHTML='<tr><td colspan="9" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>';return;}
+  tb.innerHTML=[...data].reverse().slice(0,100).map((r,i)=>{
+    const ou=r.hasOur==='yes'?'<span style="color:var(--green);font-weight:700">✅</span>':r.hasOur==='no'?'<span style="color:var(--red)">❌</span>':'—';
+    const ht=r.heat?'🔥'.repeat(parseInt(r.heat)):'—';
+    const gps=r.lat&&r.lng?`<a href="https://www.google.com/maps?q=${r.lat},${r.lng}" target="_blank" style="color:var(--blue);font-size:14px;text-decoration:none">📍</a>`:'<span style="color:var(--muted2)">—</span>';
+    return`<tr><td class="dim mono">${data.length-i}</td><td class="mono">${r.date}</td><td style="max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.agent}</td><td style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.store}</td><td class="dim" style="font-size:11px">${r.province||'—'}</td><td style="font-size:11px">${CH_N[r.shopType]||r.shopType||'—'}</td><td style="text-align:center">${gps}</td><td style="text-align:center">${ou}</td><td style="font-size:10px">${ht}</td></tr>`;
+  }).join('');
+}
+function expCSV(){
+  if(!db.length){toast('ยังไม่มีข้อมูล','t-err');return;}
+  const skuHdr=SKUS.flatMap(s=>[SKU_N[s]+' SI',SKU_N[s]+' SO',SKU_N[s]+' Source',SKU_N[s]+' Stock']);
+  const hdr=['ID','Date','Agent','Store','Owner','Phone','Line','Province','District','Address','ShopType','StoreSize','LocType','Lat','Lng','Acc','HasOur','NoReason',...skuHdr,'C1Brand','C1SI','C1SO','C1Source','C1Stock','C1Fresh','C1Promo','C2Brand','C2SI','C2SO','C2Source','C2Stock','C2Fresh','C2Promo','C3Brand','C3SI','C3SO','C3Source','C3Stock','C3Fresh','C3Promo','PromoBrand','PromoTypes','PromoDetail','TopSell','TopReason','Feedback','Heat','Remark'];
+  const rows=db.map(r=>{
+    const sv=SKUS.flatMap(s=>r.skus?.[s]?[r.skus[s].si,r.skus[s].so,r.skus[s].src,r.skus[s].stk]:['','','','']);
+    const cs=(r.competitors||[]).slice(0,3);
+    const cv=[0,1,2].flatMap(i=>cs[i]?[cs[i].brand,cs[i].sellIn,cs[i].sellOut,cs[i].source,cs[i].stock,cs[i].fresh,cs[i].promo]:['','','','','','','']);
+    return[r.id,r.date,r.agent,r.store,r.owner||'',r.phone||'',r.line||'',r.province||'',r.district||'',r.address||'',CH_N[r.shopType]||r.shopType||'',r.storeSize||'',r.locType||'',r.lat||'',r.lng||'',r.acc||'',r.hasOur||'',r.noReason||'',...sv,...cv,r.promoBrand||'',r.promoTypes||'',r.promoDetail||'',r.topSell||'',r.topReason||'',r.feedback||'',r.heat||'',r.remark||''].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"');
+  });
+  const csv='\uFEFF'+[hdr,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='laos_survey_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  toast('⬇️ Export '+db.length+' รายการ','t-ok');
+}
+function clrAll(){
+  if(!confirm('ลบข้อมูลทั้งหมด '+db.length+' รายการ?'))return;
+  db=[];localStorage.removeItem('lms4');renderDash();rCount();toast('🗑 ล้างแล้ว','t-info');
+}
+function toast(msg,cls='t-ok'){
+  const e=document.getElementById('toast');
+  e.textContent=msg;e.className='toast '+cls;
+  setTimeout(()=>e.classList.add('show'),10);
+  setTimeout(()=>e.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>
