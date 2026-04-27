@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>Laos Market Survey v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04080f;--s1:#080f1e;--s2:#0c1628;--s3:#111f38;
+  --b1:#1a2d48;--b2:#1e3455;
+  --cyan:#00e5ff;--orange:#ff7043;--green:#00e676;--gold:#ffd740;--red:#ff1744;--purple:#ce93d8;
+  --text:#e3eaf8;--text2:#b0bcd4;--muted:#5a7090;--muted2:#2e4060;
+  --font:'Sarabun',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14px;line-height:1.6;min-height:100vh;overflow-x:hidden}
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:300;height:54px;background:rgba(4,8,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);display:flex;align-items:center;justify-content:space-between;padding:0 14px;gap:8px}
+.nav-brand{display:flex;align-items:center;gap:8px}
+.nav-flag{font-size:20px}
+.nav-title{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cyan);letter-spacing:.18em;text-transform:uppercase;line-height:1.2}
+.nav-sub{font-size:9px;color:var(--muted)}
+.nav-tabs{display:flex;background:var(--s2);border:1px solid var(--b1);border-radius:8px;padding:3px;gap:2px}
+.tab-btn{padding:5px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;border:none;background:transparent;color:var(--muted);transition:all .2s;font-family:var(--font);white-space:nowrap}
+.tab-btn.active{background:var(--cyan);color:#000}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+main{padding-top:54px;min-height:100vh}
+.page{display:none}
+.page.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* HERO */
+.hero{padding:16px 14px 12px;background:linear-gradient(160deg,var(--s1),#091528);border-bottom:1px solid var(--b1);position:relative;overflow:hidden}
+.hero::after{content:'ລາວ';position:absolute;right:-5px;bottom:-14px;font-size:70px;font-weight:900;color:rgba(0,229,255,.04);pointer-events:none}
+.hero-eye{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:4px}
+.hero-title{font-size:18px;font-weight:700}
+.hero-meta{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.hb{padding:3px 8px;border-radius:4px;font-family:var(--mono);font-size:9px;font-weight:600;border:1px solid}
+.hb-c{color:var(--cyan);border-color:rgba(0,229,255,.2);background:rgba(0,229,255,.06)}
+.hb-o{color:var(--orange);border-color:rgba(255,112,67,.2);background:rgba(255,112,67,.06)}
+.hb-g{color:var(--green);border-color:rgba(0,230,118,.2);background:rgba(0,230,118,.06)}
+/* FORM */
+.fw{padding:12px 14px 8px;display:flex;flex-direction:column;gap:12px;max-width:620px;margin:0 auto}
+/* SECTION */
+.sec{background:var(--s1);border:1px solid var(--b1);border-radius:10px;overflow:hidden}
+.sec-h{display:flex;align-items:center;gap:8px;padding:10px 13px;background:var(--s2);border-bottom:1px solid var(--b1);cursor:pointer;user-select:none}
+.sec-ic{font-size:15px;flex-shrink:0}
+.sec-tt{font-size:12px;font-weight:700;flex:1;letter-spacing:.02em}
+.sec-bd{font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--s3);padding:2px 7px;border-radius:4px;border:1px solid var(--b1)}
+.sec-cv{font-size:11px;color:var(--muted);transition:transform .25s;flex-shrink:0}
+.sec.col .sec-cv{transform:rotate(-90deg)}
+.sec-b{padding:12px 13px;display:flex;flex-direction:column;gap:10px}
+.sec.col .sec-b{display:none}
+/* FIELDS */
+.f{display:flex;flex-direction:column;gap:4px}
+.fr{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.req{color:var(--red)}
+input,select,textarea{width:100%;background:var(--s2);border:1px solid var(--b1);border-radius:7px;color:var(--text);font-family:var(--font);font-size:13px;padding:9px 11px;transition:border-color .15s;outline:none;-webkit-appearance:none;appearance:none}
+input:focus,select:focus,textarea:focus{border-color:var(--cyan);background:var(--s3);box-shadow:0 0 0 3px rgba(0,229,255,.08)}
+input::placeholder,textarea::placeholder{color:var(--muted2)}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath fill='%235a7090' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px}
+textarea{resize:vertical;min-height:60px}
+/* CHIPS */
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--muted);transition:all .15s;user-select:none}
+.chip:active{transform:scale(.96)}
+.c-c{background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan)}
+.c-o{background:rgba(255,112,67,.1);border-color:var(--orange);color:var(--orange)}
+.c-g{background:rgba(0,230,118,.1);border-color:var(--green);color:var(--green)}
+.c-gd{background:rgba(255,215,64,.1);border-color:var(--gold);color:var(--gold)}
+/* SKU CARDS */
+.sku-list{display:flex;flex-direction:column;gap:8px}
+.sku-card{background:var(--s2);border:1px solid var(--b1);border-radius:7px;overflow:hidden}
+.sku-h{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;user-select:none}
+.sku-name{font-size:13px;font-weight:700;flex:1}
+.sku-tag{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;font-weight:700}
+.sku-arr{font-size:11px;color:var(--muted);transition:transform .2s}
+.sku-card.open .sku-arr{transform:rotate(90deg)}
+.sku-b{display:none;padding:10px 12px;border-top:1px solid var(--b1);flex-direction:column;gap:9px}
+.sku-card.open .sku-b{display:flex}
+.pb{background:var(--s3);border-radius:7px;padding:10px;display:flex;flex-direction:column;gap:8px}
+.pb-r{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pl{font-size:10px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+.pl-si{color:var(--orange)}
+.pl-so{color:var(--green)}
+/* COMP */
+.comp-list{display:flex;flex-direction:column;gap:8px}
+.cc{background:var(--s2);border:1px solid var(--b1);border-radius:7px;padding:11px}
+.cc-h{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.cc-num{font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--s3);padding:2px 7px;border-radius:4px;border:1px solid var(--b1)}
+.cc-del{margin-left:auto;background:none;border:none;color:var(--muted2);font-size:16px;cursor:pointer;padding:2px 6px;border-radius:4px;line-height:1;transition:color .15s}
+.cc-del:hover{color:var(--red)}
+.add-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border:1.5px dashed var(--b2);border-radius:7px;background:none;color:var(--muted);font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s}
+.add-btn:hover{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.04)}
+/* FRESHNESS */
+.fr-chips{display:flex;gap:6px;flex-wrap:wrap}
+.fr-chip{padding:5px 11px;border-radius:16px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--muted);transition:all .15s;user-select:none}
+.fr-fresh{background:rgba(0,230,118,.1);border-color:var(--green);color:var(--green)}
+.fr-ok{background:rgba(255,215,64,.1);border-color:var(--gold);color:var(--gold)}
+.fr-old{background:rgba(255,23,68,.1);border-color:var(--red);color:var(--red)}
+/* SUBMIT */
+.sw{padding:12px 14px 28px;max-width:620px;margin:0 auto}
+.sbtn{width:100%;padding:15px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--cyan),#00b8d4);color:#000;font-family:var(--font);font-size:15px;font-weight:700;cursor:pointer;letter-spacing:.02em;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.sbtn:active{transform:scale(.98)}
+.ec{text-align:center;margin-top:8px;font-family:var(--mono);font-size:10px;color:var(--muted)}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);z-index:999;padding:11px 20px;border-radius:10px;font-size:13px;font-weight:600;pointer-events:none;transition:transform .3s cubic-bezier(.34,1.56,.64,1);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.t-ok{background:var(--green);color:#000}
+.t-err{background:var(--red);color:#fff}
+.t-info{background:var(--cyan);color:#000}
+/* DASHBOARD */
+.dh{padding:16px 14px 12px;background:linear-gradient(160deg,var(--s1),#091528);border-bottom:1px solid var(--b1)}
+.dh-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px}
+.dh-title{font-size:16px;font-weight:700}
+.dh-sub{font-size:10px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+.da{display:flex;gap:6px;flex-shrink:0}
+.ab{padding:6px 11px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;font-family:var(--font);border:1px solid;transition:all .2s;white-space:nowrap}
+.ab-e{color:var(--green);border-color:rgba(0,230,118,.3);background:rgba(0,230,118,.08)}
+.ab-c{color:var(--red);border-color:rgba(255,23,68,.3);background:rgba(255,23,68,.06)}
+.ab:active{transform:scale(.96)}
+.dw{padding:12px 14px;display:flex;flex-direction:column;gap:12px;max-width:720px;margin:0 auto}
+/* KPI */
+.kpi-g{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.kpi{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:13px 14px}
+.kpi-l{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.kpi-v{font-family:var(--mono);font-size:28px;font-weight:700;line-height:1}
+.kv-c{color:var(--cyan)}.kv-g{color:var(--green)}.kv-o{color:var(--orange)}.kv-gd{color:var(--gold)}
+.kpi-s{font-size:10px;color:var(--muted);margin-top:3px}
+/* FILTER */
+.fscroll{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.fscroll::-webkit-scrollbar{display:none}
+.fc{padding:5px 13px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--b2);background:var(--s2);color:var(--muted);transition:all .15s;white-space:nowrap;flex-shrink:0}
+.fc.active{background:rgba(0,229,255,.1);border-color:var(--cyan);color:var(--cyan)}
+/* TABLE */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+thead tr{background:var(--s2);border-bottom:2px solid var(--b1)}
+th{padding:8px 10px;text-align:left;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--b1);transition:background .1s}
+tbody tr:hover{background:var(--s2)}
+td{padding:8px 10px;vertical-align:middle}
+td.mn{font-family:var(--mono);font-size:11px;color:var(--cyan)}
+td.dm{color:var(--muted)}
+/* INSIGHT */
+.ig{display:flex;flex-direction:column;gap:8px}
+.ic{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:12px}
+.ic-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ic-brand{font-size:13px;font-weight:700}
+.ic-cnt{font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--s2);padding:2px 7px;border-radius:4px;border:1px solid var(--b1)}
+.ir{display:flex;gap:7px;align-items:flex-start;font-size:11px;margin-bottom:5px;line-height:1.4}
+.ip{padding:2px 7px;border-radius:4px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;flex-shrink:0;margin-top:1px}
+.ip-s{background:rgba(0,229,255,.1);color:var(--cyan)}
+.ip-i{background:rgba(255,112,67,.1);color:var(--orange)}
+.ip-o{background:rgba(0,230,118,.1);color:var(--green)}
+.ip-r{background:rgba(206,147,216,.1);color:var(--purple)}
+.ip-p{background:rgba(255,215,64,.1);color:var(--gold)}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:8px;color:var(--muted);text-align:center}
+.ei{font-size:36px;opacity:.3}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-track{background:var(--s1)}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:4px}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand">
+    <span class="nav-flag">🇱🇦</span>
+    <div>
+      <div class="nav-title">Market Survey</div>
+      <div class="nav-sub">Laos · Beverage</div>
+    </div>
+  </div>
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="switchTab('survey',this)">📋 Survey</button>
+    <button class="tab-btn" onclick="switchTab('dashboard',this)">📊 Dashboard</button>
+  </div>
+  <div class="pulse"></div>
+</nav>
+
+<main>
+<!-- ═══════════ SURVEY ═══════════ -->
+<div class="page active" id="page-survey">
+  <div class="hero">
+    <div class="hero-eye">Field Survey Form</div>
+    <div class="hero-title">บันทึกข้อมูลตลาดลาว</div>
+    <div class="hero-meta">
+      <span class="hb hb-c" id="hb-date">📅 —</span>
+      <span class="hb hb-o" id="hb-agent">👤 —</span>
+      <span class="hb hb-g" id="hb-count">📦 0 entries</span>
+    </div>
+  </div>
+
+  <div class="fw">
+
+    <!-- 01 ข้อมูลการสำรวจ -->
+    <div class="sec" id="s1">
+      <div class="sec-h" onclick="tSec('s1')"><span class="sec-ic">🗓️</span><span class="sec-tt">ข้อมูลการสำรวจ</span><span class="sec-bd">01</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="f"><label>วันที่ <span class="req">*</span></label><input type="date" id="f_date" oninput="uHero()"></div>
+          <div class="f"><label>ชื่อพนักงาน <span class="req">*</span></label><input type="text" id="f_agent" placeholder="ชื่อ-สกุล" oninput="uHero()"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 ข้อมูลร้านค้า -->
+    <div class="sec" id="s2">
+      <div class="sec-h" onclick="tSec('s2')"><span class="sec-ic">🏪</span><span class="sec-tt">ข้อมูลร้านค้า</span><span class="sec-bd">02</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="f"><label>ชื่อร้าน <span class="req">*</span></label><input type="text" id="f_store" placeholder="ชื่อร้าน"></div>
+          <div class="f"><label>ชื่อเจ้าของ</label><input type="text" id="f_owner" placeholder="ชื่อเจ้าของ/ผู้ดูแล"></div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>เบอร์ติดต่อ</label><input type="tel" id="f_phone" placeholder="020-XXXXXXXX"></div>
+          <div class="f"><label>Line / WhatsApp</label><input type="text" id="f_line" placeholder="ID หรือเบอร์"></div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>แขวง <span class="req">*</span></label>
+            <select id="f_prov">
+              <option value="">-- แขวง --</option>
+              <option>เวียงจันทน์นคร</option><option>เวียงจันทน์</option><option>จำปาสัก</option>
+              <option>สะหวันนะเขต</option><option>หลวงพระบาง</option><option>ไซยะบุลี</option>
+              <option>คำม่วน</option><option>บอลิคำไซ</option><option>เชียงขวาง</option>
+              <option>อุดมไซ</option><option>บ่อแก้ว</option><option>หลวงน้ำทา</option>
+              <option>ฝองสาลี</option><option>หัวพัน</option><option>อัตตะปือ</option>
+              <option>เซกอง</option><option>สาละวัน</option>
+            </select>
+          </div>
+          <div class="f"><label>เมือง / เขต</label><input type="text" id="f_dist" placeholder="ชื่อเมือง / เขต"></div>
+        </div>
+        <div class="f"><label>ที่อยู่โดยย่อ</label><input type="text" id="f_addr" placeholder="ถนน / ย่าน / ใกล้เคียง"></div>
+        <div class="f">
+          <label>Shop Type <span class="req">*</span></label>
+          <div class="chips" id="cp_shop">
+            <div class="chip" data-v="traditional" onclick="pick(this,'shop','s','c-o')">🛒 Traditional</div>
+            <div class="chip" data-v="wet_market" onclick="pick(this,'shop','s','c-o')">🐟 Wet Market</div>
+            <div class="chip" data-v="minimart" onclick="pick(this,'shop','s','c-o')">🏪 Minimart/CVS</div>
+            <div class="chip" data-v="modern_trade" onclick="pick(this,'shop','s','c-o')">🏬 Modern Trade</div>
+            <div class="chip" data-v="horeca" onclick="pick(this,'shop','s','c-o')">🍽️ HoReCa</div>
+            <div class="chip" data-v="other" onclick="pick(this,'shop','s','c-o')">📦 อื่นๆ</div>
+          </div>
+        </div>
+        <div class="fr">
+          <div class="f"><label>ขนาดร้าน</label>
+            <select id="f_size"><option value="">--</option><option value="s">เล็ก (S)</option><option value="m">กลาง (M)</option><option value="l">ใหญ่ (L)</option></select>
+          </div>
+          <div class="f"><label>ทำเล</label>
+            <select id="f_loc"><option value="">--</option><option value="main_road">ริมถนนหลัก</option><option value="market">ในตลาด</option><option value="community">ในชุมชน</option><option value="mall">ในห้าง</option><option value="other">อื่นๆ</option></select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Our Brand -->
+    <div class="sec" id="s3">
+      <div class="sec-h" onclick="tSec('s3')"><span class="sec-ic">🟢</span><span class="sec-tt">Our Brand — สินค้าเรา</span><span class="sec-bd">03</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="f">
+          <label>มีสินค้าเราในร้านหรือไม่?</label>
+          <div class="chips" id="cp_hasour">
+            <div class="chip" data-v="yes" onclick="pick(this,'hasour','s','c-g');showOur(true)">✅ มี</div>
+            <div class="chip" data-v="no" onclick="pick(this,'hasour','s','c-c');showOur(false)">❌ ไม่มี</div>
+          </div>
+        </div>
+        <div id="our-yes" style="display:none;flex-direction:column;gap:8px">
+          <div class="sku-list">
+            <div class="sku-card" id="sk-dd140">
+              <div class="sku-h" onclick="tSku('sk-dd140')"><span>🥤</span><span class="sku-name">DD 140</span><span class="sku-tag" style="background:rgba(0,229,255,.1);color:var(--cyan)">Energy</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd140_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd140_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd140_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="dd140_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+            <div class="sku-card" id="sk-dd200">
+              <div class="sku-h" onclick="tSku('sk-dd200')"><span>🥤</span><span class="sku-name">DD 200</span><span class="sku-tag" style="background:rgba(0,229,255,.1);color:var(--cyan)">Energy</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd200_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd200_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd200_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="dd200_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+            <div class="sku-card" id="sk-dd450">
+              <div class="sku-h" onclick="tSku('sk-dd450')"><span>🧃</span><span class="sku-name">DD 450</span><span class="sku-tag" style="background:rgba(0,229,255,.1);color:var(--cyan)">Energy</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="dd450_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="dd450_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="dd450_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="dd450_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+            <div class="sku-card" id="sk-mikku300">
+              <div class="sku-h" onclick="tSku('sk-mikku300')"><span>🥛</span><span class="sku-name">Mikku 300</span><span class="sku-tag" style="background:rgba(206,147,216,.1);color:var(--purple)">Milk</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="mikku300_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="mikku300_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="mikku300_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="mikku300_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+            <div class="sku-card" id="sk-ddyo125">
+              <div class="sku-h" onclick="tSku('sk-ddyo125')"><span>🍶</span><span class="sku-name">DD Yo 125</span><span class="sku-tag" style="background:rgba(255,215,64,.1);color:var(--gold)">Yogurt</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="ddyo125_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="ddyo125_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="ddyo125_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="ddyo125_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+            <div class="sku-card" id="sk-ddyo300">
+              <div class="sku-h" onclick="tSku('sk-ddyo300')"><span>🍶</span><span class="sku-name">DD Yo 300</span><span class="sku-tag" style="background:rgba(255,215,64,.1);color:var(--gold)">Yogurt</span><span class="sku-arr">▶</span></div>
+              <div class="sku-b">
+                <div class="pb"><div class="pb-r">
+                  <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="ddyo300_si" placeholder="ราคาส่ง"></div>
+                  <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="ddyo300_so" placeholder="ราคาปลีก"></div>
+                </div></div>
+                <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="ddyo300_src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+                <div class="f"><label>Stock ในร้าน</label><select id="ddyo300_st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="our-no" style="display:none">
+          <div class="f"><label>สาเหตุที่ไม่มี</label>
+            <div class="chips" id="cp_nor">
+              <div class="chip" data-v="never" onclick="pick(this,'nor','s','c-c')">ไม่เคยสั่ง</div>
+              <div class="chip" data-v="oos" onclick="pick(this,'nor','s','c-c')">หมด Stock</div>
+              <div class="chip" data-v="switched" onclick="pick(this,'nor','s','c-c')">เปลี่ยนแบรนด์</div>
+              <div class="chip" data-v="price" onclick="pick(this,'nor','s','c-c')">ราคาสูงเกิน</div>
+              <div class="chip" data-v="unknown" onclick="pick(this,'nor','s','c-c')">ไม่ทราบ</div>
+            </div>
+          </div>
+          <div class="f" style="margin-top:8px"><label>รายละเอียด</label><textarea id="f_nor_note" placeholder="ระบุเพิ่มเติม..."></textarea></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Competitors -->
+    <div class="sec" id="s4">
+      <div class="sec-h" onclick="tSec('s4')"><span class="sec-ic">⚔️</span><span class="sec-tt">Competitor Brands</span><span class="sec-bd">04</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="comp-list" id="compList"></div>
+        <button class="add-btn" onclick="addComp()">＋ เพิ่มคู่แข่ง</button>
+      </div>
+    </div>
+
+    <!-- 05 Promotion -->
+    <div class="sec" id="s5">
+      <div class="sec-h" onclick="tSec('s5')"><span class="sec-ic">🎯</span><span class="sec-tt">Promotion & Campaign</span><span class="sec-bd">05</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="f"><label>ใครกำลังทำ Promotion อยู่?</label><input type="text" id="f_pb" placeholder="ชื่อแบรนด์ที่ทำ Promo"></div>
+        <div class="f"><label>ประเภท</label>
+          <div class="chips" id="cp_promo">
+            <div class="chip" data-v="discount" onclick="pick(this,'promo','m','c-gd')">💸 Price Discount</div>
+            <div class="chip" data-v="bogo" onclick="pick(this,'promo','m','c-gd')">🎁 Buy X Get Y</div>
+            <div class="chip" data-v="bundle" onclick="pick(this,'promo','m','c-gd')">📦 Bundle Pack</div>
+            <div class="chip" data-v="posm" onclick="pick(this,'promo','m','c-gd')">🪧 POSM/Display</div>
+            <div class="chip" data-v="cooler" onclick="pick(this,'promo','m','c-gd')">❄️ Branded Cooler</div>
+            <div class="chip" data-v="sampling" onclick="pick(this,'promo','m','c-gd')">🧪 Sampling</div>
+            <div class="chip" data-v="none" onclick="pick(this,'promo','s','c-gd')">— ไม่มี</div>
+          </div>
+        </div>
+        <div class="f"><label>รายละเอียด</label><textarea id="f_pd" placeholder="เช่น Red Bull ซื้อ 12 แถม 2 เฉพาะเดือนนี้..."></textarea></div>
+      </div>
+    </div>
+
+    <!-- 06 Insight -->
+    <div class="sec" id="s6">
+      <div class="sec-h" onclick="tSec('s6')"><span class="sec-ic">💬</span><span class="sec-tt">Owner / Consumer Insight</span><span class="sec-bd">06</span><span class="sec-cv">▾</span></div>
+      <div class="sec-b">
+        <div class="f"><label>สินค้าที่ขายดีที่สุดในร้านนี้?</label><input type="text" id="f_top" placeholder="ชื่อสินค้า / แบรนด์"></div>
+        <div class="f"><label>เพราะอะไรถึงขายดี?</label><textarea id="f_topwhy" placeholder="ราคาถูก / ลูกค้าขอ / ตัวแทนให้ราคาดี..."></textarea></div>
+        <div class="f"><label>Feedback จากเจ้าของร้าน / ลูกค้า</label><textarea id="f_fb" placeholder="ลูกค้าถามหาสินค้าเรา, เจ้าของร้านบอกว่า..."></textarea></div>
+        <div class="f">
+          <label>ความร้อนแรงการแข่งขัน 🌡️</label>
+          <div class="chips" id="cp_heat">
+            <div class="chip" data-v="1" onclick="pick(this,'heat','s','c-g')">1 เย็น</div>
+            <div class="chip" data-v="2" onclick="pick(this,'heat','s','c-g')">2</div>
+            <div class="chip" data-v="3" onclick="pick(this,'heat','s','c-gd')">3 ปานกลาง</div>
+            <div class="chip" data-v="4" onclick="pick(this,'heat','s','c-o')">4</div>
+            <div class="chip" data-v="5" onclick="pick(this,'heat','s','c-o')">5 🔥 ร้อนมาก</div>
+          </div>
+        </div>
+        <div class="f"><label>หมายเหตุ / สิ่งที่น่าสนใจ</label><textarea id="f_remark" placeholder="โอกาส, ความเสี่ยง, สิ่งที่ควรรายงาน..."></textarea></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sw">
+    <button class="sbtn" onclick="submit()"><span>💾</span><span>บันทึกข้อมูล</span></button>
+    <div class="ec" id="ec">รวม 0 รายการในฐานข้อมูล</div>
+  </div>
+</div>
+
+<!-- ═══════════ DASHBOARD ═══════════ -->
+<div class="page" id="page-dashboard">
+  <div class="dh">
+    <div class="dh-row">
+      <div>
+        <div class="dh-title">Market Intelligence 🇱🇦</div>
+        <div class="dh-sub" id="d-upd">Last update: —</div>
+      </div>
+      <div class="da">
+        <button class="ab ab-e" onclick="expCSV()">⬇️ CSV</button>
+        <button class="ab ab-c" onclick="clrAll()">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="hero-meta"><span class="hb hb-c" id="d-range">—</span></div>
+  </div>
+  <div class="dw">
+    <div class="kpi-g">
+      <div class="kpi"><div class="kpi-l">📍 Stores Visited</div><div class="kpi-v kv-c" id="kv-s">0</div><div class="kpi-s">ร้านทั้งหมด</div></div>
+      <div class="kpi"><div class="kpi-l">✅ Our Presence</div><div class="kpi-v kv-g" id="kv-p">0%</div><div class="kpi-s">Distribution rate</div></div>
+      <div class="kpi"><div class="kpi-l">⚔️ Competitors</div><div class="kpi-v kv-o" id="kv-c">0</div><div class="kpi-s">unique brands</div></div>
+      <div class="kpi"><div class="kpi-l">🌡️ Avg Heat</div><div class="kpi-v kv-gd" id="kv-h">—</div><div class="kpi-s">market temp</div></div>
+    </div>
+    <!-- Filter -->
+    <div class="sec"><div class="sec-h" style="cursor:default"><span class="sec-ic">🔍</span><span class="sec-tt">Filter by Channel</span></div>
+      <div class="sec-b"><div class="fscroll">
+        <div class="fc active" onclick="setF(this,'all')">All</div>
+        <div class="fc" onclick="setF(this,'traditional')">🛒 Traditional</div>
+        <div class="fc" onclick="setF(this,'wet_market')">🐟 Wet Market</div>
+        <div class="fc" onclick="setF(this,'minimart')">🏪 Minimart</div>
+        <div class="fc" onclick="setF(this,'modern_trade')">🏬 Modern Trade</div>
+        <div class="fc" onclick="setF(this,'horeca')">🍽️ HoReCa</div>
+      </div></div>
+    </div>
+    <!-- SKU Summary -->
+    <div class="sec"><div class="sec-h" style="cursor:default"><span class="sec-ic">🟢</span><span class="sec-tt">Our Brand — Distribution & Price</span></div>
+      <div class="sec-b" style="padding:0"><div class="tw"><table>
+        <thead><tr><th>SKU</th><th>ร้าน (มี)</th><th>Coverage</th><th>Avg SI</th><th>Avg SO</th><th>Top Source</th></tr></thead>
+        <tbody id="tSKU"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr></tbody>
+      </table></div></div>
+    </div>
+    <!-- Competitor -->
+    <div class="sec"><div class="sec-h" style="cursor:default"><span class="sec-ic">⚔️</span><span class="sec-tt">Competitor Intelligence</span></div>
+      <div class="sec-b"><div class="ig" id="compIG"><div class="empty"><span class="ei">⚔️</span><span>ยังไม่มีข้อมูลคู่แข่ง</span></div></div></div>
+    </div>
+    <!-- Records -->
+    <div class="sec"><div class="sec-h" style="cursor:default"><span class="sec-ic">📋</span><span class="sec-tt">Survey Records</span><span class="sec-bd" id="recN">0</span></div>
+      <div class="sec-b" style="padding:0"><div class="tw"><table>
+        <thead><tr><th>#</th><th>Date</th><th>Agent</th><th>Store</th><th>แขวง</th><th>Channel</th><th>Our</th><th>Heat</th></tr></thead>
+        <tbody id="tRec"><tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr></tbody>
+      </table></div></div>
+    </div>
+  </div>
+</div>
+</main>
+<div class="toast" id="toast"></div>
+
+<script>
+const SKUS=['dd140','dd200','dd450','mikku300','ddyo125','ddyo300'];
+const SKU_N={dd140:'DD 140',dd200:'DD 200',dd450:'DD 450',mikku300:'Mikku 300',ddyo125:'DD Yo 125',ddyo300:'DD Yo 300'};
+const CH_N={traditional:'🛒 Traditional',wet_market:'🐟 Wet Market',minimart:'🏪 Minimart',modern_trade:'🏬 Modern Trade',horeca:'🍽️ HoReCa',other:'📦 อื่นๆ'};
+let db=JSON.parse(localStorage.getItem('lms3')||'[]');
+let cs={};let ci=0;let af='all';
+
+window.onload=()=>{
+  document.getElementById('f_date').value=new Date().toISOString().split('T')[0];
+  uHero();addComp();rCount();
+};
+
+function switchTab(p,b){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  b.classList.add('active');
+  if(p==='dashboard')renderDash();
+}
+function tSec(id){document.getElementById(id).classList.toggle('col')}
+function tSku(id){document.getElementById(id).classList.toggle('open')}
+
+function pick(el,g,mode,cls){
+  if(!cs[g])cs[g]=[];
+  const v=el.dataset.v;
+  const container=el.closest('.chips,.fr-chips');
+  if(mode==='s'){
+    if(container)container.querySelectorAll('[class*="chip"]').forEach(c=>{c.className=c.className.replace(/c-[a-z]+/g,'').trim()});
+    el.classList.add(cls);cs[g]=[v];
+  } else {
+    if([...el.classList].some(c=>c.startsWith('c-'))){el.className=el.className.replace(/c-[a-z]+/g,'').trim();cs[g]=cs[g].filter(x=>x!==v);}
+    else{el.classList.add(cls);cs[g].push(v);}
+  }
+  if(g==='hasour'){showOur(v==='yes');}
+}
+function gv(g){return(cs[g]||[])[0]||''}
+function gvs(g){return(cs[g]||[]).join(', ')}
+
+function showOur(y){
+  document.getElementById('our-yes').style.display=y?'flex':'none';
+  document.getElementById('our-no').style.display=y?'none':'block';
+}
+function uHero(){
+  document.getElementById('hb-date').textContent='📅 '+(document.getElementById('f_date').value||'—');
+  document.getElementById('hb-agent').textContent='👤 '+(document.getElementById('f_agent').value||'—');
+}
+
+// COMPETITOR
+function addComp(){
+  ci++;const n=ci;
+  const d=document.createElement('div');
+  d.className='cc';d.id='comp_'+n;
+  d.innerHTML=`
+  <div class="cc-h">
+    <span class="cc-num">คู่แข่ง #${n}</span>
+    <button class="cc-del" onclick="document.getElementById('comp_${n}').remove()">✕</button>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div class="fr">
+      <div class="f"><label>แบรนด์ <span class="req">*</span></label><input type="text" id="c${n}b" placeholder="เช่น Est, Red Bull"></div>
+      <div class="f"><label>ประเทศ/แหล่งที่มา</label>
+        <select id="c${n}or"><option value="">--</option><option>ไทย</option><option>ลาว</option><option>เวียดนาม</option><option>จีน</option><option>ญี่ปุ่น</option><option>อื่นๆ</option></select>
+      </div>
+    </div>
+    <div class="fr">
+      <div class="f"><label>SKU / รสชาติ / ขนาด</label><input type="text" id="c${n}sk" placeholder="Original 250ml"></div>
+      <div class="f"><label>ประเภทสินค้า</label>
+        <select id="c${n}cat"><option value="">--</option><option value="energy">Energy Drink</option><option value="water">น้ำดื่ม</option><option value="juice">น้ำผลไม้</option><option value="cola">Cola/CSD</option><option value="tea">ชา/กาแฟ RTD</option><option value="sports">Sports Drink</option><option value="milk">นม/โยเกิร์ต</option><option value="other">อื่นๆ</option></select>
+      </div>
+    </div>
+    <div class="pb"><div class="pb-r">
+      <div class="f"><div class="pl pl-si">🏭 Sell-in (LAK)</div><input type="number" id="c${n}si" placeholder="ราคาส่ง"></div>
+      <div class="f"><div class="pl pl-so">🏪 Sell-out (LAK)</div><input type="number" id="c${n}so" placeholder="ราคาปลีก"></div>
+    </div></div>
+    <div class="f"><label>ซื้อมาจากไหน / ตัวแทน</label><input type="text" id="c${n}src" placeholder="ชื่อตัวแทน / บริษัท"></div>
+    <div class="fr">
+      <div class="f"><label>Stock ในร้าน</label>
+        <select id="c${n}st"><option value="">--</option><option>1–3 CT</option><option>4–10 CT</option><option>11–50 CT</option><option>51–100 CT</option><option>101–300 CT</option><option>301–500 CT</option><option>500 CT+</option></select>
+      </div>
+      <div class="f"><label>ความสด / สภาพ Stock</label>
+        <div class="fr-chips">
+          <div class="fr-chip" data-v="fresh" onclick="pickFr(this,'fr${n}','fr-fresh')">✅ Fresh</div>
+          <div class="fr-chip" data-v="ok" onclick="pickFr(this,'fr${n}','fr-ok')">🟡 OK</div>
+          <div class="fr-chip" data-v="old" onclick="pickFr(this,'fr${n}','fr-old')">🔴 ใกล้หมดอายุ</div>
+        </div>
+      </div>
+    </div>
+    <div class="f"><label>Promotion ที่วิ่งอยู่</label><input type="text" id="c${n}pr" placeholder="ซื้อ 12 แถม 1, ลด 10%..."></div>
+    <div class="f"><label>หมายเหตุ</label><input type="text" id="c${n}nt" placeholder="สิ่งที่น่าสังเกต..."></div>
+  </div>`;
+  document.getElementById('compList').appendChild(d);
+  cs['fr'+n]=[];
+}
+function pickFr(el,g,cls){
+  el.closest('.fr-chips').querySelectorAll('.fr-chip').forEach(c=>c.className='fr-chip');
+  el.classList.add(cls);cs[g]=[el.dataset.v];
+}
+function collectComps(){
+  return[...document.querySelectorAll('[id^="comp_"]')].map(r=>{
+    const n=r.id.split('_')[1];
+    const b=(document.getElementById('c'+n+'b')||{}).value||'';
+    if(!b)return null;
+    return{brand:b,origin:(document.getElementById('c'+n+'or')||{}).value||'',sku:(document.getElementById('c'+n+'sk')||{}).value||'',cat:(document.getElementById('c'+n+'cat')||{}).value||'',sellIn:(document.getElementById('c'+n+'si')||{}).value||'',sellOut:(document.getElementById('c'+n+'so')||{}).value||'',source:(document.getElementById('c'+n+'src')||{}).value||'',stock:(document.getElementById('c'+n+'st')||{}).value||'',fresh:gv('fr'+n),promo:(document.getElementById('c'+n+'pr')||{}).value||'',note:(document.getElementById('c'+n+'nt')||{}).value||''};
+  }).filter(Boolean);
+}
+
+// SUBMIT
+function submit(){
+  const dt=document.getElementById('f_date').value;
+  const ag=document.getElementById('f_agent').value.trim();
+  const st=document.getElementById('f_store').value.trim();
+  const pv=document.getElementById('f_prov').value;
+  const sh=gv('shop');
+  if(!dt||!ag||!st||!pv||!sh){toast('⚠️ กรุณากรอก: วันที่, ชื่อพนักงาน, ชื่อร้าน, แขวง, Shop Type','t-err');return;}
+  const skus={};
+  SKUS.forEach(s=>{
+    const si=(document.getElementById(s+'_si')||{}).value||'';
+    const so=(document.getElementById(s+'_so')||{}).value||'';
+    const src=(document.getElementById(s+'_src')||{}).value||'';
+    const stk=(document.getElementById(s+'_st')||{}).value||'';
+    if(si||so||src||stk)skus[s]={si,so,src,stk};
+  });
+  const e={
+    id:Date.now(),date:dt,agent:ag,
+    store:st,owner:document.getElementById('f_owner').value,
+    phone:document.getElementById('f_phone').value,line:document.getElementById('f_line').value,
+    province:pv,district:document.getElementById('f_dist').value,address:document.getElementById('f_addr').value,
+    shopType:sh,storeSize:document.getElementById('f_size').value,locType:document.getElementById('f_loc').value,
+    hasOur:gv('hasour'),noReason:gv('nor'),noReasonNote:document.getElementById('f_nor_note').value,
+    skus,
+    competitors:collectComps(),
+    promoBrand:document.getElementById('f_pb').value,
+    promoTypes:gvs('promo'),promoDetail:document.getElementById('f_pd').value,
+    topSell:document.getElementById('f_top').value,topReason:document.getElementById('f_topwhy').value,
+    feedback:document.getElementById('f_fb').value,heat:gv('heat'),
+    remark:document.getElementById('f_remark').value,
+  };
+  db.push(e);localStorage.setItem('lms3',JSON.stringify(db));
+  toast('✅ บันทึก "'+st+'" สำเร็จ','t-ok');
+  resetF(dt,ag);rCount();
+}
+
+function resetF(dt,ag){
+  document.querySelectorAll('#page-survey input[type=text],#page-survey input[type=number],#page-survey input[type=tel],#page-survey textarea').forEach(x=>{if(x.id!='f_date'&&x.id!='f_agent')x.value='';});
+  document.querySelectorAll('#page-survey select').forEach(s=>s.selectedIndex=0);
+  document.querySelectorAll('#page-survey .chip,.fr-chip').forEach(c=>{c.className=c.className.replace(/c-[a-z]+|fr-[a-z]+/g,'').trim();});
+  cs={};
+  document.getElementById('our-yes').style.display='none';
+  document.getElementById('our-no').style.display='none';
+  document.querySelectorAll('.sku-card').forEach(c=>c.classList.remove('open'));
+  document.getElementById('compList').innerHTML='';
+  ci=0;
+  document.getElementById('f_date').value=dt;
+  document.getElementById('f_agent').value=ag;
+  addComp();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function rCount(){
+  document.getElementById('hb-count').textContent='📦 '+db.length+' entries';
+  document.getElementById('ec').textContent='รวม '+db.length+' รายการในฐานข้อมูล';
+}
+
+// DASHBOARD
+function setF(el,f){af=f;document.querySelectorAll('.fc').forEach(c=>c.classList.remove('active'));el.classList.add('active');renderDash();}
+function fdata(){return af==='all'?db:db.filter(r=>r.shopType===af);}
+
+function renderDash(){
+  const data=fdata();const n=data.length;
+  document.getElementById('kv-s').textContent=n;
+  const wo=data.filter(r=>r.hasOur==='yes').length;
+  document.getElementById('kv-p').textContent=n?Math.round(wo/n*100)+'%':'0%';
+  const ab=new Set(data.flatMap(r=>(r.competitors||[]).map(c=>c.brand?.toLowerCase()).filter(Boolean)));
+  document.getElementById('kv-c').textContent=ab.size;
+  const hs=data.filter(r=>r.heat).map(r=>parseInt(r.heat));
+  document.getElementById('kv-h').textContent=hs.length?(hs.reduce((a,b)=>a+b,0)/hs.length).toFixed(1)+' 🔥':'—';
+  if(db.length){
+    document.getElementById('d-upd').textContent='Last update: '+new Date(db[db.length-1].id).toLocaleString('th-TH');
+    const ds=db.map(r=>r.date).sort();
+    document.getElementById('d-range').textContent=ds[0]+' → '+ds[ds.length-1];
+  }
+  document.getElementById('recN').textContent=n;
+  renderSKU(data);renderComp(data);renderTbl(data);
+}
+
+function renderSKU(data){
+  const tb=document.getElementById('tSKU');
+  if(!data.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>';return;}
+  tb.innerHTML=SKUS.map(s=>{
+    const rows=data.filter(r=>r.skus?.[s]);
+    const n=rows.length;
+    const sis=rows.map(r=>parseInt(r.skus[s].si)).filter(p=>!isNaN(p)&&p>0);
+    const sos=rows.map(r=>parseInt(r.skus[s].so)).filter(p=>!isNaN(p)&&p>0);
+    const avgSI=sis.length?Math.round(sis.reduce((a,b)=>a+b,0)/sis.length).toLocaleString():'—';
+    const avgSO=sos.length?Math.round(sos.reduce((a,b)=>a+b,0)/sos.length).toLocaleString():'—';
+    const srcs=rows.map(r=>r.skus[s].src).filter(Boolean);
+    const topS=srcs.length?Object.entries(srcs.reduce((a,v)=>{a[v]=(a[v]||0)+1;return a},{})).sort((a,b)=>b[1]-a[1])[0]?.[0]:'—';
+    const cov=data.length?Math.round(n/data.length*100):0;
+    const cc=cov>=50?'var(--green)':cov>=25?'var(--gold)':'var(--red)';
+    return`<tr><td><b>${SKU_N[s]}</b></td><td class="mn">${n}</td><td><span style="color:${cc};font-family:var(--mono);font-weight:700">${cov}%</span></td><td class="mn" style="color:var(--orange)">${avgSI}</td><td class="mn" style="color:var(--green)">${avgSO}</td><td class="dm" style="max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px">${topS}</td></tr>`;
+  }).join('');
+}
+
+function renderComp(data){
+  const el=document.getElementById('compIG');
+  const m={};
+  data.forEach(r=>(r.competitors||[]).forEach(c=>{if(!c.brand)return;const k=c.brand.trim();if(!m[k])m[k]=[];m[k].push(c);}));
+  const s=Object.entries(m).sort((a,b)=>b[1].length-a[1].length);
+  if(!s.length){el.innerHTML='<div class="empty"><span class="ei">⚔️</span><span>ยังไม่มีข้อมูลคู่แข่ง</span></div>';return;}
+  el.innerHTML=s.slice(0,10).map(([brand,rows])=>{
+    const skus=[...new Set(rows.map(r=>r.sku).filter(Boolean))];
+    const sis=rows.map(r=>parseInt(r.sellIn)).filter(p=>!isNaN(p)&&p>0);
+    const sos=rows.map(r=>parseInt(r.sellOut)).filter(p=>!isNaN(p)&&p>0);
+    const srcs=[...new Set(rows.map(r=>r.source).filter(Boolean))];
+    const ps=[...new Set(rows.map(r=>r.promo).filter(Boolean))];
+    const si=sis.length?Math.min(...sis).toLocaleString()+(sis.length>1&&Math.min(...sis)!==Math.max(...sis)?'–'+Math.max(...sis).toLocaleString():''):null;
+    const so=sos.length?Math.min(...sos).toLocaleString()+(sos.length>1&&Math.min(...sos)!==Math.max(...sos)?'–'+Math.max(...sos).toLocaleString():''):null;
+    return`<div class="ic"><div class="ic-h"><span class="ic-brand">${brand}</span><span class="ic-cnt">${rows.length}x</span></div>
+    ${skus.length?`<div class="ir"><span class="ip ip-s">SKU</span><span>${skus.slice(0,3).join(', ')}</span></div>`:''}
+    ${si?`<div class="ir"><span class="ip ip-i">SELL-IN</span><span>${si} LAK</span></div>`:''}
+    ${so?`<div class="ir"><span class="ip ip-o">SELL-OUT</span><span>${so} LAK</span></div>`:''}
+    ${srcs.length?`<div class="ir"><span class="ip ip-r">SOURCE</span><span>${srcs.slice(0,2).join(', ')}</span></div>`:''}
+    ${ps.length?`<div class="ir"><span class="ip ip-p">PROMO</span><span>${ps[0]}</span></div>`:''}
+    </div>`;
+  }).join('');
+}
+
+function renderTbl(data){
+  const tb=document.getElementById('tRec');
+  if(!data.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">—</td></tr>';return;}
+  tb.innerHTML=[...data].reverse().slice(0,100).map((r,i)=>{
+    const ou=r.hasOur==='yes'?'<span style="color:var(--green)">✅</span>':r.hasOur==='no'?'<span style="color:var(--red)">❌</span>':'—';
+    const ht=r.heat?'🔥'.repeat(parseInt(r.heat)):'—';
+    return`<tr><td class="dm mn">${data.length-i}</td><td class="mn">${r.date}</td><td style="max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.agent}</td><td style="max-width:90px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.store}</td><td class="dm" style="font-size:11px">${r.province||'—'}</td><td style="font-size:11px">${CH_N[r.shopType]||r.shopType||'—'}</td><td style="text-align:center">${ou}</td><td style="font-size:10px">${ht}</td></tr>`;
+  }).join('');
+}
+
+// EXPORT CSV
+function expCSV(){
+  if(!db.length){toast('ยังไม่มีข้อมูล','t-err');return;}
+  const skuHdr=SKUS.flatMap(s=>[SKU_N[s]+' SI',SKU_N[s]+' SO',SKU_N[s]+' Source',SKU_N[s]+' Stock']);
+  const hdr=['ID','Date','Agent','Store','Owner','Phone','Line','Province','District','Address','ShopType','StoreSize','LocType','HasOur','NoReason',...skuHdr,'C1Brand','C1SI','C1SO','C1Source','C1Stock','C1Fresh','C1Promo','C2Brand','C2SI','C2SO','C2Source','C2Stock','C2Fresh','C2Promo','C3Brand','C3SI','C3SO','C3Source','C3Stock','C3Fresh','C3Promo','PromoBrand','PromoTypes','PromoDetail','TopSell','TopReason','Feedback','Heat','Remark'];
+  const rows=db.map(r=>{
+    const sv=SKUS.flatMap(s=>r.skus?.[s]?[r.skus[s].si,r.skus[s].so,r.skus[s].src,r.skus[s].stk]:['','','','']);
+    const cs=(r.competitors||[]).slice(0,3);
+    const cv=[0,1,2].flatMap(i=>cs[i]?[cs[i].brand,cs[i].sellIn,cs[i].sellOut,cs[i].source,cs[i].stock,cs[i].fresh,cs[i].promo]:['','','','','','','']);
+    return[r.id,r.date,r.agent,r.store,r.owner||'',r.phone||'',r.line||'',r.province||'',r.district||'',r.address||'',CH_N[r.shopType]||r.shopType||'',r.storeSize||'',r.locType||'',r.hasOur||'',r.noReason||'',...sv,...cv,r.promoBrand||'',r.promoTypes||'',r.promoDetail||'',r.topSell||'',r.topReason||'',r.feedback||'',r.heat||'',r.remark||''].map(v=>'"'+String(v||'').replace(/"/g,'""')+'"');
+  });
+  const csv='\uFEFF'+[hdr,...rows].map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));
+  a.download='laos_survey_'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  toast('⬇️ Export '+db.length+' รายการ','t-ok');
+}
+function clrAll(){
+  if(!confirm('ลบข้อมูลทั้งหมด '+db.length+' รายการ?'))return;
+  db=[];localStorage.removeItem('lms3');renderDash();rCount();toast('🗑 ล้างแล้ว','t-info');
+}
+function toast(msg,cls='t-ok'){
+  const e=document.getElementById('toast');
+  e.textContent=msg;e.className='toast '+cls;
+  setTimeout(()=>e.classList.add('show'),10);
+  setTimeout(()=>e.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>
