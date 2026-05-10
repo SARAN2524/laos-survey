@@ -867,17 +867,25 @@ function sendToSheet(entry,storeName){
     queueEntry(entry);
     return;
   }
+  // Use FormData to avoid CORS preflight - works with Google Apps Script
+  const formData=new FormData();
+  formData.append('payload',JSON.stringify(entry));
   fetch(SHEET_URL,{
     method:'POST',
-    mode:'no-cors',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(entry)
-  }).then(()=>{
-    toast('✅ บันทึก "'+storeName+'" สำเร็จ ☁️','t-ok');
-    // Sync any queued entries
-    syncQueued();
+    body:formData
+  }).then(r=>r.text()).then(txt=>{
+    // Parse response to verify it actually succeeded
+    let ok=false;
+    try{const j=JSON.parse(txt);ok=j.success===true;}catch(e){}
+    if(ok){
+      toast('✅ บันทึก "'+storeName+'" สำเร็จ ☁️','t-ok');
+      syncQueued();
+    } else {
+      toast('⚠️ เก็บไว้ออฟไลน์ — จะ sync ภายหลัง','t-info');
+      queueEntry(entry);
+    }
   }).catch(err=>{
-    toast('⚠️ เก็บไว้ออฟไลน์ — จะ sync เมื่อมี internet','t-info');
+    toast('⚠️ เก็บไว้ออฟไลน์ — ไม่มี internet','t-info');
     queueEntry(entry);
   });
 }
@@ -896,7 +904,10 @@ function syncQueued(){
     if(!q.length)return;
     let success=0;
     q.forEach(entry=>{
-      fetch(SHEET_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(entry)})
+      const fd=new FormData();
+      fd.append('payload',JSON.stringify(entry));
+      fetch(SHEET_URL,{method:'POST',body:fd})
+        .then(r=>r.text())
         .then(()=>{success++;});
     });
     setTimeout(()=>{
@@ -1018,14 +1029,4 @@ function expCSV(){
 }
 function clrAll(){
   if(!confirm('ลบข้อมูลทั้งหมด '+db.length+' รายการ?'))return;
-  db=[];localStorage.removeItem('lms4');renderDash();rCount();toast('🗑 ล้างแล้ว','t-info');
-}
-function toast(msg,cls='t-ok'){
-  const e=document.getElementById('toast');
-  e.textContent=msg;e.className='toast '+cls;
-  setTimeout(()=>e.classList.add('show'),10);
-  setTimeout(()=>e.classList.remove('show'),3200);
-}
-</script>
-</body>
-</html>
+  db=[];localStorage.removeItem('lms4');renderDash();rCount();toast('🗑 ล้างแล้ว','t-info'
