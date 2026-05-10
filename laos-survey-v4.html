@@ -371,15 +371,6 @@ td.dim{color:var(--muted)}
             <div class="gps-error-title">⚠️ ไม่สามารถดึงพิกัดได้</div>
             <div class="gps-error-msg" id="gpsErrMsg"></div>
           </div>
-          <div class="gps-manual">
-            <details>
-              <summary>กรอกพิกัดเองแบบ manual</summary>
-              <div class="gps-manual-inputs">
-                <div class="f"><label>Latitude</label><input type="text" id="f_lat_m" placeholder="17.9757" inputmode="decimal" oninput="onManualGPS()"></div>
-                <div class="f"><label>Longitude</label><input type="text" id="f_lng_m" placeholder="102.6331" inputmode="decimal" oninput="onManualGPS()"></div>
-              </div>
-            </details>
-          </div>
         </div>
         <input type="hidden" id="f_lat">
         <input type="hidden" id="f_lng">
@@ -674,7 +665,7 @@ const CH_N={traditional:'🛒 Traditional',wet_market:'🐟 Wet Market',minimart
 // ════════════════════════════════════════════════
 //  GOOGLE SHEET URL — แทนที่ด้วย URL จาก Apps Script
 // ════════════════════════════════════════════════
-const SHEET_URL='PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+const SHEET_URL='https://script.google.com/macros/s/AKfycbzCdfmDMqrBYa2AI5EVCqJRJdKNk7rarIdGrCksIxoPpky9ke9PVIRKdC39UiQ02Lu9/exec';
 function loadDB(){try{return JSON.parse(localStorage.getItem('lms4')||'[]');}catch(e){return[];}}let db=loadDB();
 let cs={};let ci=0;let af='all';
 let gpsData={lat:null,lng:null,acc:null};
@@ -761,19 +752,6 @@ function getGPS(){
     },
     {enableHighAccuracy:true,timeout:15000,maximumAge:0}
   );
-}
-function onManualGPS(){
-  const lat=document.getElementById('f_lat_m').value.trim();
-  const lng=document.getElementById('f_lng_m').value.trim();
-  if(lat&&lng&&!isNaN(lat)&&!isNaN(lng)){
-    gpsData={lat:parseFloat(lat).toFixed(6),lng:parseFloat(lng).toFixed(6),acc:'manual'};
-    document.getElementById('f_lat').value=gpsData.lat;
-    document.getElementById('f_lng').value=gpsData.lng;
-    document.getElementById('gpsCoords').textContent=gpsData.lat+',  '+gpsData.lng;
-    document.getElementById('gpsAcc').textContent='manual input';
-    document.getElementById('gpsMapsLink').href='https://www.google.com/maps?q='+gpsData.lat+','+gpsData.lng;
-    document.getElementById('gpsResult').style.display='block';
-  }
 }
 function uHero(){
   document.getElementById('hb-date').textContent='📅 '+(document.getElementById('f_date').value||'—');
